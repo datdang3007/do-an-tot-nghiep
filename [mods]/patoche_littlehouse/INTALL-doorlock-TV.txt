@@ -1,0 +1,61 @@
+CREDIT : 
+Mapping : patoche#4702
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+
+You want know more about Patoche ? 
+- Don't hesitate to join his discord : https://discord.gg/NvrTRdh
+& Don't miss something with his youtube chanel : https://www.youtube.com/channel/UCHDmZB2QPSEucvlslURrrqQ
+Follow me and up your RP Skill (:p)
+- My instagram : patoche_mapping
+- If you have any question , open ticket on my discord : https://discord.gg/NvrTRdh
+
+-----------------------------------------------------------------------------
+----------------------- Installation FIVEM / ALTV MAPPING : -----------------
+
+Mapping [FIVEM]/[ALTV]:
+step 1 : Copy/Past the folder " patoche_littlehouse " on your resource folder .
+step 2 : Open your server.cfg and Start/Encure patoche_littlehouse.
+
+---------------------------------------------------------------------
+----------------------- Installation SP [ONLYFIVEM] : ---------------
+The script is a gift for people who don't know how spawn boat on the mapping
+
+tep 1 : Open the file with 7zip, Winrar or any other program that allows you to unzip these types of files.
+step 2 : Put "patoche_littlehouse_sp" folder into 'mods/update/x64/dlcpacks' director.
+step 3 : add dlcpacks:/patoche_littlehouse_sp/ in the dlclist.xml located at 'mods/update.rpf/common/data'.
+step 4 : Start your Singleplayer party and let's go
+
+
+
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+ADD DOORLOCK  :
+
+BUILDING:
+
+door : entrance
+Name : v_ilev_ra_door2
+position :2558.34082, 6191.301, 165.486557
+
+
+TV :
+
+Name : prop_tv_flat_01
+position : -4.12337255, -3.45406127, 1.25892639
+
+name: prop_tv_flat_michael
+position : 6.631784, -0.0268303156, 5.05485535
+
+
+
+
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+
+
+
+
+
+
+

@@ -1,0 +1,5 @@
+RegisterNUICallback('finalChoseThePath', function(data, cb)
+    toggleNui(false, false, nil)
+    TriggerEvent('cs:option:setOption', data.option)
+    cb({})
+end)
