@@ -100,7 +100,7 @@ export const DialogDetailPrice = (props: Props) => {
 
             <Grid item xs={6}>
               <TypographyStyle fontSize={theme.spacing(13)}>
-                - Khu vực: Thành phố
+                - Khu vực: {info?.position}
               </TypographyStyle>
             </Grid>
 
@@ -118,7 +118,7 @@ export const DialogDetailPrice = (props: Props) => {
 
             <Grid item xs={6}>
               <TypographyStyle fontSize={theme.spacing(13)}>
-                - Tải trọng: 7/20
+                - Tải trọng: {info?.amount}/20
               </TypographyStyle>
             </Grid>
           </Grid>

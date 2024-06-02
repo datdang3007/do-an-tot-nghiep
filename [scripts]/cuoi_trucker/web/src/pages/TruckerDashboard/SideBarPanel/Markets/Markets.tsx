@@ -1,56 +1,36 @@
 import { Grid, Typography, styled, useTheme } from "@mui/material";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { COLOR_PALLETTE } from "../../../../constants";
 import { ITruckerMarket, ITruckerMarketItem } from "../../../../interfaces";
+import { fetchNui } from "../../../../utils";
 import { CustomAccordion } from "./CustomAccordion";
 import { DialogDetailPrice } from "./DialogDetailPrice";
 
-const listTruckerMarket: ITruckerMarket[] = [
+const defaultListMarket = [
   {
     id: 1,
+    type: "store",
     name: "Tạp hoá",
-    list: [
-      {
-        id: 1,
-        distance: "7",
-        name: "Tạp hoá 1",
-        subTitle: "Thu mua các loại nhu yếu phẩm",
-        image: "https://i.ytimg.com/vi/ZM2DhD6C0U8/maxresdefault.jpg",
-      },
-    ],
+    list: [],
   },
   {
     id: 2,
+    type: "clothes",
     name: "Cửa hàng quần áo",
-    list: [
-      {
-        id: 1,
-        distance: "5",
-        name: "Cửa hàng quần áo 1",
-        subTitle: "Thu mua các loại quần áo",
-        image:
-          "https://dunb17ur4ymx4.cloudfront.net/wysiwyg/1031918/527d4eabadff1f04fca5052ca0c6e9e2a2821fb3.PNG",
-      },
-    ],
+    list: [],
   },
   {
     id: 3,
+    type: "machine",
     name: "Cửa hàng dụng cụ",
-    list: [
-      {
-        id: 1,
-        distance: "10",
-        name: "Cửa hàng dụng cụ 1",
-        subTitle: "Thu mua các loại dụng cụ",
-        image:
-          "https://s3-gallery.int-cdn.lcpdfrusercontent.com/monthly_2017_05/large.592b6c6549a33_youtool.jpg.638b19e33c31ca357f9b441a15f13b87.jpg",
-      },
-    ],
+    list: [],
   },
 ];
 
 export const Markets = () => {
   const theme = useTheme();
+  const [listMarket, setListMarket] =
+    useState<ITruckerMarket[]>(defaultListMarket);
   const [DetailPriceInfo, setDetailPriceInfo] =
     useState<ITruckerMarketItem | null>(null);
 
@@ -66,7 +46,7 @@ export const Markets = () => {
   }, []);
 
   const renderCardsMarketComponent = useMemo(() => {
-    return listTruckerMarket.map((market) => {
+    return listMarket.map((market) => {
       return (
         <CustomAccordion
           key={market.id}
@@ -75,7 +55,20 @@ export const Markets = () => {
         />
       );
     });
-  }, [handleOpenDialogDetailPrice]);
+  }, [listMarket, handleOpenDialogDetailPrice]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const marketsResponse = await fetchNui("getMarkets");
+      const markets: ITruckerMarket[] = handleMarketsResponse(
+        listMarket,
+        marketsResponse
+      );
+      setListMarket(markets);
+    };
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Grid container rowGap={theme.spacing(16)} height={1}>
@@ -125,3 +118,18 @@ const ListMarketStyle = styled(Grid)(({ theme }) => ({
     background: "#FFFFFF",
   },
 }));
+
+const handleMarketsResponse = (
+  listMarket: ITruckerMarket[],
+  marketsResponse: any
+) => {
+  return listMarket.map((item) => {
+    const newList = marketsResponse?.filter(
+      (market: any) => market.type === item.type
+    );
+    return {
+      ...item,
+      list: newList,
+    };
+  });
+};

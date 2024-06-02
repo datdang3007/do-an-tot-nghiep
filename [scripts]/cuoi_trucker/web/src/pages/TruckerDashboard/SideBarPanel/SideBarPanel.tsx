@@ -1,5 +1,5 @@
 import { Grid, Typography, useTheme } from "@mui/material";
-import { useCallback } from "react";
+import { useMemo } from "react";
 import { ETruckerTabId } from "../../../constants";
 import { useTruckerJobProvider } from "../../../providers";
 import { Markets } from "./Markets";
@@ -10,7 +10,7 @@ export const SideBarPanel = () => {
   const theme = useTheme();
   const { tab } = useTruckerJobProvider();
 
-  const renderTabPanelComponent = useCallback(() => {
+  const tabPanelComponent = useMemo(() => {
     switch (tab) {
       case ETruckerTabId.Vehicles:
         return <Vehicles />;
@@ -25,7 +25,7 @@ export const SideBarPanel = () => {
 
   return (
     <Grid container height={1} padding={theme.spacing(16)}>
-      {renderTabPanelComponent()}
+      {tabPanelComponent}
     </Grid>
   );
 };
