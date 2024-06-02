@@ -9,3 +9,9 @@ export enum ETruckerMarketType {
   Clothes = "clothes",
   Machine = "machine",
 }
+
+export enum ESupplierCategories {
+  Store = "store",
+  Clothes = "clothes",
+  Machine = "machine",
+}

@@ -3,6 +3,8 @@ WarehouseSystem.data = {}
 WarehouseSystem.action = false
 WarehouseSystem.defaultData = {
     {
+        id = 1,
+        name = "Nhà cung cấp Buccaneer Way",
         code = 'WareHouse_01',
         ['store'] = {
             ['prop_cs_rub_box_02']      = {amount = 20, price = 150},
@@ -33,6 +35,8 @@ WarehouseSystem.defaultData = {
         }
     },
     {
+        id = 2,
+        name = "Nhà cung cấp El Rancho Blvd",
         code = 'WareHouse_02',
         ['store'] = {
             ['prop_cs_rub_box_02']      = {amount = 20, price = 150},
@@ -153,6 +157,10 @@ end)
 ----------------------------------
 --- Callbacks:
 ----------------------------------
+ESX.RegisterServerCallback('cuoi-trucker:warehouse-system:getWareHouses', function(source, cb)
+    cb(WarehouseSystem.GetCurrentData())
+end)
+
 ESX.RegisterServerCallback('cuoi-trucker:warehouse-system:buyCargo', function(source, cb, wareHouseCode, wareHouseType)
     local source = source
     local xPlayer = ESX.GetPlayerFromId(source)

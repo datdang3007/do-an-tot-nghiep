@@ -93,6 +93,18 @@ Config.WareHouses = {
     MaximumCargo = 20,
     Size = {x = 1.5, y = 1.5, z = 1.0},
     Color  = {r = 50, g = 200, b = 50},
+    List = {
+        {
+            code = "WareHouse_01",
+            name = "Nhà cung cấp Buccaneer Way",
+            pos = vector3(1190.53, -3326.32, 4.53),
+        },
+        {
+            code = "WareHouse_02",
+            name = "Nhà cung cấp El Rancho Blvd",
+            pos = vector3(1213.34, -1256.54, 34.23),
+        }
+    },
     Pos = {
         {
             ware_house_code = 'WareHouse_01',

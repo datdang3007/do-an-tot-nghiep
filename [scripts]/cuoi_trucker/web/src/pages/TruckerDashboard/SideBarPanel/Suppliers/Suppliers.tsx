@@ -1,46 +1,42 @@
 import { Grid, Typography, styled, useTheme } from "@mui/material";
-import { useMemo } from "react";
-import { COLOR_PALLETTE } from "../../../../constants";
+import { useEffect, useMemo, useState } from "react";
+import { COLOR_PALLETTE, ESupplierCategories } from "../../../../constants";
 import { ITruckerSupplier } from "../../../../interfaces";
 import { CustomAccordion } from "./CustomAccordion";
-
-const listTruckerSupplier: ITruckerSupplier[] = [
-  {
-    id: 1,
-    name: "Nhà cung cấp 1",
-    list: [
-      {
-        id: 1,
-        distance: "7",
-        name: "Tạp hoá 1",
-        subTitle: "Thu mua các loại nhu yếu phẩm",
-        image: "https://i.ytimg.com/vi/ZM2DhD6C0U8/maxresdefault.jpg",
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "Nhà cung cấp 2",
-    list: [
-      {
-        id: 1,
-        distance: "7",
-        name: "Tạp hoá 1",
-        subTitle: "Thu mua các loại nhu yếu phẩm",
-        image: "https://i.ytimg.com/vi/ZM2DhD6C0U8/maxresdefault.jpg",
-      },
-    ],
-  },
-];
+import { fetchNui } from "../../../../utils";
+import { randomId } from "@mui/x-data-grid-generator";
 
 export const Suppliers = () => {
   const theme = useTheme();
+  const [listTruckerSupplier, setListTruckerSupplier] = useState<
+    ITruckerSupplier[]
+  >([
+    {
+      id: 1,
+      name: "test",
+      code: "test_code",
+      list: [],
+    },
+  ]);
 
   const renderCardsSupplierComponent = useMemo(() => {
     return listTruckerSupplier.map((supplier) => {
       return <CustomAccordion key={supplier.id} supplier={supplier} />;
     });
+  }, [listTruckerSupplier]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const suppliersResponse = await fetchNui("getWareHouses");
+      const suppliers: ITruckerSupplier[] =
+        handleSuppliersResponse(suppliersResponse);
+      setListTruckerSupplier(suppliers);
+    };
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  console.log("listTruckerSupplier", listTruckerSupplier);
 
   return (
     <Grid container rowGap={theme.spacing(16)} height={1}>
@@ -83,3 +79,42 @@ const ListSupplierStyle = styled(Grid)(({ theme }) => ({
     background: "#FFFFFF",
   },
 }));
+
+const convertListItemSupplier = (object: any) => {
+  const categoryLabels = {
+    store: "Tạp hóa",
+    clothes: "Quần áo",
+    machine: "Dụng cụ",
+  };
+  const sizes = [
+    "prop_cs_rub_box_02",
+    "prop_cardbordbox_04a",
+    "prop_box_wood05a",
+    "prop_box_wood04a",
+    "prop_box_wood08a",
+  ];
+
+  return Object.values(ESupplierCategories).map((category) => {
+    const items = sizes.map((size) => {
+      const { amount, price } = object[category][size];
+      return [size, `${price} (${amount})`];
+    });
+    const name: string = categoryLabels[category];
+    return {
+      id: randomId(),
+      name,
+      ...Object.fromEntries(items),
+    };
+  });
+};
+
+const handleSuppliersResponse = (suppliersResponse: any) => {
+  return suppliersResponse.map((supplier: any) => {
+    return {
+      id: supplier.id,
+      name: supplier.name,
+      code: supplier.code,
+      list: convertListItemSupplier(supplier),
+    };
+  });
+};

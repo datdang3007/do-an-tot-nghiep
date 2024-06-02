@@ -1,16 +1,18 @@
 import { Button, Typography, TypographyProps } from "@mui/material";
+import { ReactNode } from "react";
 
 type Props = {
-  text: string;
+  text?: string;
   buttonProps?: any;
+  children?: ReactNode;
   textProps?: TypographyProps;
 };
 
 export const ButtonCommon = (props: Props) => {
-  const { text, textProps, buttonProps } = props;
+  const { text, children, textProps, buttonProps } = props;
   return (
     <Button color="primary" {...buttonProps}>
-      <Typography {...textProps}>{text}</Typography>
+      {children ?? <Typography {...textProps}>{text}</Typography>}
     </Button>
   );
 };

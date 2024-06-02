@@ -1,17 +1,20 @@
-import { ExpandMore } from "@mui/icons-material";
+import { ExpandMore, Place } from "@mui/icons-material";
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
   Grid,
+  IconButton,
+  Tooltip,
   Typography,
   styled,
   useTheme,
 } from "@mui/material";
-import { useMemo } from "react";
 import { COLOR_PALLETTE } from "../../../../constants";
 import { ITruckerSupplier } from "../../../../interfaces";
 import { CardSupplier } from "./CardSupplier";
+import { useCallback } from "react";
+import { fetchNui } from "../../../../utils";
 
 type Props = {
   supplier: ITruckerSupplier;
@@ -21,10 +24,8 @@ export const CustomAccordion = (props: Props) => {
   const theme = useTheme();
   const { supplier } = props;
 
-  const renderMarketItems = useMemo(() => {
-    return supplier?.list?.map((item) => {
-      return <CardSupplier key={item.id} />;
-    });
+  const onClickSetWaypoint = useCallback(() => {
+    fetchNui("setWayPointToSupplier", supplier);
   }, [supplier]);
 
   return (
@@ -39,7 +40,15 @@ export const CustomAccordion = (props: Props) => {
       <AccordionSummaryStyle
         expandIcon={<ExpandMore sx={{ color: "#FFFFFF" }} />}
       >
-        <TypographyStyle>{supplier.name}</TypographyStyle>
+        <Grid container alignItems="center" columnGap={theme.spacing(8)}>
+          {/* Button GPS */}
+          <Tooltip title="Chỉ đường" enterDelay={350}>
+            <IconButton color="primary" onClick={onClickSetWaypoint}>
+              <Place sx={{ fontSize: theme.spacing(14) }} />
+            </IconButton>
+          </Tooltip>
+          <TypographyStyle>{supplier.name}</TypographyStyle>
+        </Grid>
       </AccordionSummaryStyle>
 
       <AccordionDetails>
@@ -50,7 +59,11 @@ export const CustomAccordion = (props: Props) => {
           rowGap={theme.spacing(12)}
           paddingTop={theme.spacing(16)}
         >
-          {renderMarketItems}
+          <CardSupplier
+            key={supplier.id}
+            data={supplier.list}
+            onClickSetWaypoint={onClickSetWaypoint}
+          />
         </Grid>
       </AccordionDetails>
     </Accordion>

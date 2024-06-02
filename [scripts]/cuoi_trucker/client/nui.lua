@@ -30,6 +30,9 @@ RegisterNUICallback('hideFrame', function(_, cb)
     cb({})
 end)
 
+-------------------------------------------
+--- Vehicles Page
+-------------------------------------------
 RegisterNUICallback('rentVehicle', function(data, cb)
     toggleNui(false, false, nil)
     ESX.ShowNotification(defineMessageRentSuccess(data), true, false, 3000)
@@ -37,6 +40,9 @@ RegisterNUICallback('rentVehicle', function(data, cb)
     cb({})
 end)
 
+-------------------------------------------
+--- Markets Page
+-------------------------------------------
 RegisterNUICallback('getMarkets', function(data, cb)
     ESX.TriggerServerCallback('cuoi-trucker:commodity-system:getMarkets', function(markets)
         if not markets then cb({}) end
@@ -47,8 +53,6 @@ end)
 RegisterNUICallback('setWayPointToMarket', function(data, cb)
     local targetMarket = nil
     for _, store in ipairs(Config.Shops.List) do
-        print('store.code', store.code)
-        print('data.code', data.code)
         if store.code == data.code then
             targetMarket = store
             break
@@ -58,6 +62,33 @@ RegisterNUICallback('setWayPointToMarket', function(data, cb)
     if targetMarket then
         toggleNui(false, false, nil)
         SetNewWaypoint(targetMarket.pos.x, targetMarket.pos.y)
+        ESX.ShowNotification("Đã định vị GPS tới ~g~" .. data.name, true, false, 3000)
+        cb({})
+    end
+end)
+
+-------------------------------------------
+--- Suppliers Page
+-------------------------------------------
+RegisterNUICallback('getWareHouses', function(data, cb)
+    ESX.TriggerServerCallback('cuoi-trucker:warehouse-system:getWareHouses', function(wareHouses)
+        if not wareHouses then cb({}) end
+        cb(wareHouses)
+    end)
+end)
+
+RegisterNUICallback('setWayPointToSupplier', function(data, cb)
+    local targetSupplier = nil
+    for _, wareHouse in ipairs(Config.WareHouses.List) do
+        if wareHouse.code == data.code then
+            targetSupplier = wareHouse
+            break
+        end
+    end
+
+    if targetSupplier then
+        toggleNui(false, false, nil)
+        SetNewWaypoint(targetSupplier.pos.x, targetSupplier.pos.y)
         ESX.ShowNotification("Đã định vị GPS tới ~g~" .. data.name, true, false, 3000)
         cb({})
     end

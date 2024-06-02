@@ -1,88 +1,66 @@
+import { Navigation } from "@mui/icons-material";
 import { Grid, styled, useTheme } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { ButtonCommon } from "../../../../components";
 import { COLOR_PALLETTE } from "../../../../constants";
-import { randomId } from "@mui/x-data-grid-generator";
 
-export const CardSupplier = () => {
+type Props = {
+  data: any[];
+  onClickSetWaypoint: () => void;
+};
+
+export const CardSupplier = (props: Props) => {
   const theme = useTheme();
+  const { data, onClickSetWaypoint } = props;
 
-  const columns: GridColDef<(typeof rows)[number]>[] = [
+  const columns: GridColDef<(typeof data)[number]>[] = [
     {
       field: "name",
       headerName: "Loại hàng",
       width: 200,
+      align: "center",
       sortable: false,
       resizable: false,
     },
     {
-      field: "extreme_small",
+      field: "prop_cs_rub_box_02",
       headerName: "Rất nhỏ",
-      type: "number",
       width: 125,
+      align: "center",
       sortable: false,
       resizable: false,
     },
     {
-      field: "small",
+      field: "prop_cardbordbox_04a",
       headerName: "Nhỏ",
-      type: "number",
       width: 125,
+      align: "center",
       sortable: false,
       resizable: false,
     },
     {
-      field: "medium",
+      field: "prop_box_wood05a",
       headerName: "Vừa",
-      type: "number",
       width: 125,
+      align: "center",
       sortable: false,
       resizable: false,
     },
     {
-      field: "large",
+      field: "prop_box_wood04a",
       headerName: "Lớn",
-      type: "number",
       width: 125,
+      align: "center",
       sortable: false,
       resizable: false,
     },
     {
-      field: "extreme_large",
+      field: "prop_box_wood08a",
       headerName: "Rất lớn",
-      type: "number",
       width: 125,
+      align: "center",
       sortable: false,
       resizable: false,
-    },
-  ];
-
-  const rows: any[] = [
-    {
-      id: randomId(),
-      name: "Tạp hoá",
-      extreme_small: 100,
-      small: 200,
-      medium: 300,
-      large: 400,
-      extreme_large: 500,
-    },
-    {
-      id: randomId(),
-      name: "Quần áo",
-      extreme_small: 100,
-      small: 200,
-      medium: 300,
-      large: 400,
-      extreme_large: 500,
-    },
-    {
-      id: randomId(),
-      name: "Dụng cụ",
-      extreme_small: 100,
-      small: 200,
-      medium: 300,
-      large: 400,
-      extreme_large: 500,
     },
   ];
 
@@ -90,7 +68,7 @@ export const CardSupplier = () => {
     <CustomCard container rowGap={theme.spacing(16)}>
       <TableStyle container>
         <DataGrid
-          rows={rows}
+          rows={data}
           columns={columns}
           hideFooter
           disableColumnMenu
@@ -98,6 +76,18 @@ export const CardSupplier = () => {
           disableColumnSelector
         />
       </TableStyle>
+
+      <Grid container justifyContent="flex-end">
+        <ButtonCommon
+          text="Chỉ đường"
+          buttonProps={{
+            color: "primary",
+            variant: "contained",
+            startIcon: <Navigation />,
+            onClick: onClickSetWaypoint,
+          }}
+        />
+      </Grid>
     </CustomCard>
   );
 };

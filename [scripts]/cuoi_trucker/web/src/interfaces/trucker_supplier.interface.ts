@@ -9,5 +9,6 @@ export interface ITruckerSupplierItem {
 export interface ITruckerSupplier {
   id: number;
   name: string;
+  code: string;
   list: ITruckerSupplierItem[];
 }
