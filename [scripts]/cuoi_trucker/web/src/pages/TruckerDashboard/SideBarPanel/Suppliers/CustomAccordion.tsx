@@ -36,6 +36,7 @@ export const CustomAccordion = (props: Props) => {
         margin: "0 !important",
         background: "transparent",
       }}
+      defaultExpanded
     >
       <AccordionSummaryStyle
         expandIcon={<ExpandMore sx={{ color: "#FFFFFF" }} />}

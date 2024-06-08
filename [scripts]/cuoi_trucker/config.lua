@@ -174,35 +174,35 @@ Config.Shops = {
         {
             code = 'store_01',
             type = 'store',
-            name = 'Kho tạp hóa 01',
+            name = 'Kho tạp hóa Ineseno Road',
             maximum_cargo = 10,
             pos = vector3(-3047.72, 590.36, 6.76),
         },
         {
             code = 'store_02',
             type = 'store',
-            name = 'Kho tạp hóa 02',
+            name = 'Kho tạp hóa Grapeseed Main St',
             maximum_cargo = 10,
             pos = vector3(1702.53, 4916.64, 41.08),
         },
         {
             code = 'store_03',
             type = 'store',
-            name = 'Kho tạp hóa 03',
+            name = 'Kho tạp hóa Route 68',
             maximum_cargo = 10,
             pos = vector3(541.74, 2663.77, 41.17),
         },
         {
             code = 'store_04',
             type = 'store',
-            name = 'Kho tạp hóa 04',
+            name = 'Kho tạp hóa Clinton Ave',
             maximum_cargo = 20,
             pos = vector3(371.22, 337.51, 102.33),
         },
         {
             code = 'store_05',
             type = 'store',
-            name = 'Kho tạp hóa 05',
+            name = 'Kho tạp hóa Polomino Fwy',
             maximum_cargo = 20,
             pos = vector3(2553.15, 399.56, 107.56),
         },
@@ -211,28 +211,28 @@ Config.Shops = {
         {
             code = 'clothes_01',
             type = 'clothes',
-            name = 'Kho quần áo 01',
+            name = 'Kho quần áo Polomini Ave',
             maximum_cargo = 10,
             pos = vector3(-823.55, -1065.41, 10.65),
         },
         {
             code = 'clothes_02',
             type = 'clothes',
-            name = 'Kho quần áo 02',
+            name = 'Kho quần áo Great Ocean Hwy',
             maximum_cargo = 15,
             pos = vector3(-3169.99, 1034.09, 19.84),
         },
         {
             code = 'clothes_03',
             type = 'clothes',
-            name = 'Kho quần áo 03',
+            name = 'Kho quần áo Route 68',
             maximum_cargo = 20,
             pos = vector3(619.1, 2785.25, 42.48),
         },
         {
             code = 'clothes_04',
             type = 'clothes',
-            name = 'Kho quần áo 04',
+            name = 'Kho quần áo Paleto Blvd',
             maximum_cargo = 10,
             pos = vector3(10.07, 6505.69, 30.54),
         },
@@ -241,17 +241,66 @@ Config.Shops = {
         {
             code = 'machine_01',
             type = 'machine',
-            name = 'Kho dụng cụ 01',
+            name = 'Kho dụng cụ Davis Ave',
             maximum_cargo = 35,
             pos = vector3(29.38, -1770.19, 28.61),
         },
         {
             code = 'machine_02',
             type = 'machine',
-            name = 'Kho dụng cụ 02',
+            name = 'Kho dụng cụ Senora Fwy',
             maximum_cargo = 50,
             pos = vector3(2703.7, 3457.29, 54.55),
         },
+    }
+}
+
+Config.Suppliers = {
+    ["WareHouse_01"] = {
+        store = {
+            ['prop_cs_rub_box_02']      = { min_productivity = 3, max_productivity = 5, max_amount = 20, min_price = 80, max_price = 180 },
+            ['prop_cardbordbox_04a']    = { min_productivity = 2, max_productivity = 4, max_amount = 15, min_price = 150, max_price = 280 },
+            ['prop_box_wood05a']        = { min_productivity = 2, max_productivity = 4, max_amount = 10, min_price = 200, max_price = 380 },
+            ['prop_box_wood04a']        = { min_productivity = 1, max_productivity = 3, max_amount = 8, min_price = 275, max_price = 480 },
+            ['prop_box_wood08a']        = { min_productivity = 1, max_productivity = 2, max_amount = 5, min_price = 350, max_price = 580 },
+        },
+        clothes = {
+            ['prop_cs_rub_box_02']      = { min_productivity = 3, max_productivity = 5, max_amount = 20, min_price = 80, max_price = 180 },
+            ['prop_cardbordbox_04a']    = { min_productivity = 2, max_productivity = 4, max_amount = 15, min_price = 150, max_price = 280 },
+            ['prop_box_wood05a']        = { min_productivity = 2, max_productivity = 4, max_amount = 10, min_price = 200, max_price = 380 },
+            ['prop_box_wood04a']        = { min_productivity = 1, max_productivity = 3, max_amount = 8, min_price = 275, max_price = 480 },
+            ['prop_box_wood08a']        = { min_productivity = 1, max_productivity = 2, max_amount = 5, min_price = 350, max_price = 580 },
+        },
+        machine = {
+            ['prop_cs_rub_box_02']      = { min_productivity = 5, max_productivity = 7, max_amount = 50, min_price = 25, max_price = 50 },
+            ['prop_cardbordbox_04a']    = { min_productivity = 4, max_productivity = 6, max_amount = 40, min_price = 50, max_price = 75 },
+            ['prop_box_wood05a']        = { min_productivity = 4, max_productivity = 5, max_amount = 30, min_price = 90, max_price = 120 },
+            ['prop_box_wood04a']        = { min_productivity = 3, max_productivity = 4, max_amount = 25, min_price = 100, max_price = 150 },
+            ['prop_box_wood08a']        = { min_productivity = 2, max_productivity = 3, max_amount = 20, min_price = 150, max_price = 250 },
+        }
+    },
+    ["WareHouse_02"] = {
+        store = {
+            ['prop_cs_rub_box_02']      = { min_productivity = 3, max_productivity = 5, max_amount = 20, min_price = 80, max_price = 180 },
+            ['prop_cardbordbox_04a']    = { min_productivity = 2, max_productivity = 4, max_amount = 15, min_price = 150, max_price = 280 },
+            ['prop_box_wood05a']        = { min_productivity = 2, max_productivity = 4, max_amount = 10, min_price = 200, max_price = 380 },
+            ['prop_box_wood04a']        = { min_productivity = 1, max_productivity = 3, max_amount = 8, min_price = 275, max_price = 480 },
+            ['prop_box_wood08a']        = { min_productivity = 1, max_productivity = 2, max_amount = 5, min_price = 350, max_price = 580 },
+        },
+        clothes = {
+            ['prop_cs_rub_box_02']      = { min_productivity = 4, max_productivity = 6, max_amount = 25, min_price = 35, max_price = 150 },
+            ['prop_cardbordbox_04a']    = { min_productivity = 3, max_productivity = 5, max_amount = 20, min_price = 75, max_price = 250 },
+            ['prop_box_wood05a']        = { min_productivity = 2, max_productivity = 4, max_amount = 15, min_price = 125, max_price = 350 },
+            ['prop_box_wood04a']        = { min_productivity = 2, max_productivity = 3, max_amount = 12, min_price = 200, max_price = 450 },
+            ['prop_box_wood08a']        = { min_productivity = 1, max_productivity = 2, max_amount = 8, min_price = 250, max_price = 550 },
+        },
+        machine = {
+            ['prop_cs_rub_box_02']      = { min_productivity = 4, max_productivity = 6, max_amount = 35, min_price = 50, max_price = 75 },
+            ['prop_cardbordbox_04a']    = { min_productivity = 3, max_productivity = 5, max_amount = 30, min_price = 80, max_price = 120 },
+            ['prop_box_wood05a']        = { min_productivity = 2, max_productivity = 4, max_amount = 25, min_price = 100, max_price = 150 },
+            ['prop_box_wood04a']        = { min_productivity = 1, max_productivity = 3, max_amount = 20, min_price = 150, max_price = 220 },
+            ['prop_box_wood08a']        = { min_productivity = 1, max_productivity = 2, max_amount = 15, min_price = 200, max_price = 300 },
+        }
     }
 }
 

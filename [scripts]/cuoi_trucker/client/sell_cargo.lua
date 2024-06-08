@@ -78,13 +78,13 @@ CreateThread(function()
                     x = Config.Shops.List[i].pos.x,
                     y = Config.Shops.List[i].pos.y,
                     z = Config.Shops.List[i].pos.z + 1.65,
-                }, Config.Shops.List[i].name, 1.2, 6)
+                }, '~y~' ..Config.Shops.List[i].name, 1.0, 6)
 
                 ESX.Game.Utils.DrawText3D({
                     x = Config.Shops.List[i].pos.x,
                     y = Config.Shops.List[i].pos.y,
                     z = Config.Shops.List[i].pos.z + 1.5,
-                }, content, 1.2, 6)
+                }, content, 0.85, 6)
                 
                 DrawMarker(1, Config.Shops.List[i].pos, 0.0, 0.0, 0.0, 0, 0.0, 0.0, Config.Shops.Size.x, Config.Shops.Size.y, Config.Shops.Size.z, Config.Shops.Color.r, Config.Shops.Color.g, Config.Shops.Color.b, 255, false, false, 2, true, false, false, false)
                 sleep = 0

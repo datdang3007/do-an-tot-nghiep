@@ -71,6 +71,29 @@ WarehouseSystem.defaultData = {
 ----------------------------------
 --- Functions:
 ----------------------------------
+function randomProp(wareHouseCode, supplierType, data)
+    local newData = data
+    local supplierConfig = Config.Suppliers[wareHouseCode][supplierType]
+    for prop, value in pairs(data) do
+        -- Reset price:
+        local minPrice = supplierConfig[prop].min_price
+        local maxPrice = supplierConfig[prop].max_price
+        newData[prop].price = math.random(minPrice, maxPrice)
+        
+        -- Reset amount:
+        local maxAmount = supplierConfig[prop].max_amount
+        local minProductivity = supplierConfig[prop].min_productivity
+        local maxProductivity = supplierConfig[prop].max_productivity
+        local currentAmount = value.amount
+        local newAmount = currentAmount + math.random(minProductivity, maxProductivity)
+        if newAmount > maxAmount then
+            newAmount = maxAmount
+        end
+        newData[prop].amount = newAmount
+    end
+    return newData
+end
+
 function WarehouseSystem.UpdateFileData()
     TriggerClientEvent('cuoi_trucker:client:syncWarehouseServerData', -1, WarehouseSystem.data)
     SaveResourceFile(GetCurrentResourceName(), "data/warehouse_system.json", json.encode(WarehouseSystem.data), -1)
@@ -120,39 +143,19 @@ end
 ----------------------------------
 --- Events:
 ----------------------------------
--- RegisterServerEvent('cuoi-trucker:commodity-system:getCargo')
--- AddEventHandler('cuoi-trucker:commodity-system:getCargo', function(dataCargo)
---     local source = source
---     local xPlayer = ESX.GetPlayerFromId(source)
---     if not xPlayer or not dataCargo then end
-
---     -- Define params:
---     local storeIdx = dataCargo.storeIdx
---     local purchaseObj = Config.Purchases[dataCargo.type][dataCargo.prop]
-
---     -- Check same type:
---     if dataCargo.type ~= Config.Shops.List[storeIdx].type then
---         print('not same type')
---         return
---     end
-
---     -- Check store full:
---     local storeAmount = WarehouseSystem.data[storeIdx].amount
---     local newStoreAmount = storeAmount + purchaseObj.amount
---     if newStoreAmount > Config.Shops.List[storeIdx].maximum_cargo then
---         print('store is full')
---         return
---     end
-
---     -- Give money for player:
---     print('xPlayer', xPlayer)
---     -- xPlayer.addMoney(WarehouseSystem.data[storeIdx].purchase[dataCargo.prop])
-    
---     -- Update file:
---     WarehouseSystem.data[storeIdx].amount = newStoreAmount
---     TriggerClientEvent('cuoi-trucker:commodity-system:pushCargo', -1, WarehouseSystem.data)
---     SaveResourceFile(GetCurrentResourceName(), "data/warehouse_system.json", json.encode(WarehouseSystem.data), -1)
--- end)
+RegisterServerEvent('cuoi-trucker:warehouse-system:resetWarehouse')
+AddEventHandler('cuoi-trucker:warehouse-system:resetWarehouse', function()
+    local currentData = WarehouseSystem.GetCurrentData()
+    if currentData ~= nil then
+        for k,v in pairs(currentData) do
+            currentData[k].store = randomProp(v.code, 'store', currentData[k].store)
+            currentData[k].clothes = randomProp(v.code, 'clothes', currentData[k].clothes)
+            currentData[k].machine = randomProp(v.code, 'machine', currentData[k].machine)
+        end
+        WarehouseSystem.data = currentData
+        WarehouseSystem.UpdateFileData()
+    end
+end)
 
 ----------------------------------
 --- Callbacks:
@@ -186,7 +189,7 @@ Citizen.CreateThread(function()
 	while true do
         local sleep = 5000
         if WarehouseSystem.action then
-            sleep = Config.ReloadCommodity * 60 * 1000
+            sleep = Config.ReloadWareHouse * 60 * 1000
             local loadFile = LoadResourceFile(GetCurrentResourceName(), "data/warehouse_system.json")
             WarehouseSystem.UpdateFileData()
         end
@@ -198,12 +201,7 @@ end)
 --- Commands:
 ----------------------------------
 if Config.Debug then
-    -- RegisterCommand("sv_get_cargo", function(source, args)
-    --     local dataTest = {
-    --         storeIdx = 1,
-    --         type = 'store',
-    --         prop = 'prop_cs_rub_box_02',
-    --     }
-    --     TriggerEvent('cuoi-trucker:commodity-system:pushCargo', dataTest)
-    -- end)
+    RegisterCommand("trucker_reset_warehouse", function(source, args)
+        TriggerEvent('cuoi-trucker:warehouse-system:resetWarehouse')
+    end)
 end

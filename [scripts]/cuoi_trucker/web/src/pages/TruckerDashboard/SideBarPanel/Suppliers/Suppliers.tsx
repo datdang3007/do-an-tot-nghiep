@@ -80,7 +80,7 @@ const convertListItemSupplier = (object: any) => {
   return Object.values(ESupplierCategories).map((category) => {
     const items = Object.values(ESize).map((size) => {
       const { amount, price } = object[category][size];
-      return [size, `${price} (${amount})`];
+      return [size, `$${price} (${amount})`];
     });
     const name: string = ESupplierCategoriesLabel[category];
     return {

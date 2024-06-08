@@ -126,7 +126,7 @@ const convertDetailPrice = (purchase: any) => {
     return {
       id: randomId(),
       size: ESizeLabel[size],
-      price: price.toString(),
+      price: `$${price.toString()}`,
     };
   });
 
@@ -146,7 +146,12 @@ const handleMarketsResponse = (
       .map((item: any) => ({
         ...item,
         detailPrice: convertDetailPrice(item.purchase),
-      }));
+      }))
+      .sort((a: any, b: any) => {
+        const distanceA = parseFloat(a.distance.replace(",", "."));
+        const distanceB = parseFloat(b.distance.replace(",", "."));
+        return distanceA - distanceB;
+      });
 
     return {
       ...item,

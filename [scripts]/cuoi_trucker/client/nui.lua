@@ -30,6 +30,15 @@ RegisterNUICallback('hideFrame', function(_, cb)
     cb({})
 end)
 
+RegisterKeyMapping('trucker_tablet', 'open trucker tablet', 'keyboard', 'i')
+RegisterCommand("trucker_tablet", function()
+    local playerPed = PlayerPedId()
+    local plate = getVehiclePlate(GetVehiclePedIsIn(playerPed))
+    if IsPedInAnyVehicle(playerPed) and vehicles[plate]?.entity then
+        TriggerEvent('cuoi-trucker:nui:toggle', true, 'trucker dashboard', true)
+    end
+end)
+
 -------------------------------------------
 --- Vehicles Page
 -------------------------------------------
