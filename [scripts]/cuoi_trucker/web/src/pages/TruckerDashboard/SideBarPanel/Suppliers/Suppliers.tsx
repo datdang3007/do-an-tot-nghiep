@@ -1,6 +1,11 @@
 import { Grid, Typography, styled, useTheme } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-import { COLOR_PALLETTE, ESupplierCategories } from "../../../../constants";
+import {
+  COLOR_PALLETTE,
+  ESize,
+  ESupplierCategories,
+  ESupplierCategoriesLabel,
+} from "../../../../constants";
 import { ITruckerSupplier } from "../../../../interfaces";
 import { CustomAccordion } from "./CustomAccordion";
 import { fetchNui } from "../../../../utils";
@@ -10,14 +15,7 @@ export const Suppliers = () => {
   const theme = useTheme();
   const [listTruckerSupplier, setListTruckerSupplier] = useState<
     ITruckerSupplier[]
-  >([
-    {
-      id: 1,
-      name: "test",
-      code: "test_code",
-      list: [],
-    },
-  ]);
+  >([]);
 
   const renderCardsSupplierComponent = useMemo(() => {
     return listTruckerSupplier.map((supplier) => {
@@ -35,8 +33,6 @@ export const Suppliers = () => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  console.log("listTruckerSupplier", listTruckerSupplier);
 
   return (
     <Grid container rowGap={theme.spacing(16)} height={1}>
@@ -81,25 +77,12 @@ const ListSupplierStyle = styled(Grid)(({ theme }) => ({
 }));
 
 const convertListItemSupplier = (object: any) => {
-  const categoryLabels = {
-    store: "Tạp hóa",
-    clothes: "Quần áo",
-    machine: "Dụng cụ",
-  };
-  const sizes = [
-    "prop_cs_rub_box_02",
-    "prop_cardbordbox_04a",
-    "prop_box_wood05a",
-    "prop_box_wood04a",
-    "prop_box_wood08a",
-  ];
-
   return Object.values(ESupplierCategories).map((category) => {
-    const items = sizes.map((size) => {
+    const items = Object.values(ESize).map((size) => {
       const { amount, price } = object[category][size];
       return [size, `${price} (${amount})`];
     });
-    const name: string = categoryLabels[category];
+    const name: string = ESupplierCategoriesLabel[category];
     return {
       id: randomId(),
       name,

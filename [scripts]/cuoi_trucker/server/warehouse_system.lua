@@ -12,8 +12,8 @@ WarehouseSystem.defaultData = {
             ['prop_box_wood05a']        = {amount = 20, price = 350},
             ['prop_box_wood04a']        = {amount = 20, price = 450},
             ['prop_box_wood08a']        = {amount = 20, price = 550},
-            ['v_ind_cf_boxes']          = {amount = 20, price = 675},
-            ['prop_boxpile_07d']        = {amount = 20, price = 775},
+            -- ['v_ind_cf_boxes']          = {amount = 20, price = 675},
+            -- ['prop_boxpile_07d']        = {amount = 20, price = 775},
         },
         ['clothes'] = {
             ['prop_cs_rub_box_02']      = {amount = 20, price = 150},
@@ -21,8 +21,8 @@ WarehouseSystem.defaultData = {
             ['prop_box_wood05a']        = {amount = 20, price = 350},
             ['prop_box_wood04a']        = {amount = 20, price = 450},
             ['prop_box_wood08a']        = {amount = 20, price = 550},
-            ['v_ind_cf_boxes']          = {amount = 20, price = 675},
-            ['prop_boxpile_07d']        = {amount = 20, price = 775},
+            -- ['v_ind_cf_boxes']          = {amount = 20, price = 675},
+            -- ['prop_boxpile_07d']        = {amount = 20, price = 775},
         },
         ['machine'] = {
             ['prop_cs_rub_box_02']      = {amount = 20, price = 65},
@@ -30,8 +30,8 @@ WarehouseSystem.defaultData = {
             ['prop_box_wood05a']        = {amount = 20, price = 140},
             ['prop_box_wood04a']        = {amount = 20, price = 180},
             ['prop_box_wood08a']        = {amount = 20, price = 250},
-            ['v_ind_cf_boxes']          = {amount = 20, price = 300},
-            ['prop_boxpile_07d']        = {amount = 20, price = 375},
+            -- ['v_ind_cf_boxes']          = {amount = 20, price = 300},
+            -- ['prop_boxpile_07d']        = {amount = 20, price = 375},
         }
     },
     {
@@ -44,8 +44,8 @@ WarehouseSystem.defaultData = {
             ['prop_box_wood05a']        = {amount = 20, price = 350},
             ['prop_box_wood04a']        = {amount = 20, price = 450},
             ['prop_box_wood08a']        = {amount = 20, price = 550},
-            ['v_ind_cf_boxes']          = {amount = 20, price = 675},
-            ['prop_boxpile_07d']        = {amount = 20, price = 775},
+            -- ['v_ind_cf_boxes']          = {amount = 20, price = 675},
+            -- ['prop_boxpile_07d']        = {amount = 20, price = 775},
         },
         ['clothes'] = {
             ['prop_cs_rub_box_02']      = {amount = 20, price = 150},
@@ -53,8 +53,8 @@ WarehouseSystem.defaultData = {
             ['prop_box_wood05a']        = {amount = 20, price = 350},
             ['prop_box_wood04a']        = {amount = 20, price = 450},
             ['prop_box_wood08a']        = {amount = 20, price = 550},
-            ['v_ind_cf_boxes']          = {amount = 20, price = 675},
-            ['prop_boxpile_07d']        = {amount = 20, price = 775},
+            -- ['v_ind_cf_boxes']          = {amount = 20, price = 675},
+            -- ['prop_boxpile_07d']        = {amount = 20, price = 775},
         },
         ['machine'] = {
             ['prop_cs_rub_box_02']      = {amount = 20, price = 65},
@@ -62,8 +62,8 @@ WarehouseSystem.defaultData = {
             ['prop_box_wood05a']        = {amount = 20, price = 140},
             ['prop_box_wood04a']        = {amount = 20, price = 180},
             ['prop_box_wood08a']        = {amount = 20, price = 250},
-            ['v_ind_cf_boxes']          = {amount = 20, price = 300},
-            ['prop_boxpile_07d']        = {amount = 20, price = 375},
+            -- ['v_ind_cf_boxes']          = {amount = 20, price = 300},
+            -- ['prop_boxpile_07d']        = {amount = 20, price = 375},
         }
     }
 }
@@ -120,39 +120,39 @@ end
 ----------------------------------
 --- Events:
 ----------------------------------
-RegisterServerEvent('cuoi-trucker:commodity-system:getCargo')
-AddEventHandler('cuoi-trucker:commodity-system:getCargo', function(dataCargo)
-    local source = source
-    local xPlayer = ESX.GetPlayerFromId(source)
-    if not xPlayer or not dataCargo then end
+-- RegisterServerEvent('cuoi-trucker:commodity-system:getCargo')
+-- AddEventHandler('cuoi-trucker:commodity-system:getCargo', function(dataCargo)
+--     local source = source
+--     local xPlayer = ESX.GetPlayerFromId(source)
+--     if not xPlayer or not dataCargo then end
 
-    -- Define params:
-    local storeIdx = dataCargo.storeIdx
-    local purchaseObj = Config.Purchases[dataCargo.type][dataCargo.prop]
+--     -- Define params:
+--     local storeIdx = dataCargo.storeIdx
+--     local purchaseObj = Config.Purchases[dataCargo.type][dataCargo.prop]
 
-    -- Check same type:
-    if dataCargo.type ~= Config.Shops.List[storeIdx].type then
-        print('not same type')
-        return
-    end
+--     -- Check same type:
+--     if dataCargo.type ~= Config.Shops.List[storeIdx].type then
+--         print('not same type')
+--         return
+--     end
 
-    -- Check store full:
-    local storeAmount = WarehouseSystem.data[storeIdx].amount
-    local newStoreAmount = storeAmount + purchaseObj.amount
-    if newStoreAmount > Config.Shops.List[storeIdx].maximum_product then
-        print('store is full')
-        return
-    end
+--     -- Check store full:
+--     local storeAmount = WarehouseSystem.data[storeIdx].amount
+--     local newStoreAmount = storeAmount + purchaseObj.amount
+--     if newStoreAmount > Config.Shops.List[storeIdx].maximum_cargo then
+--         print('store is full')
+--         return
+--     end
 
-    -- Give money for player:
-    print('xPlayer', xPlayer)
-    -- xPlayer.addMoney(WarehouseSystem.data[storeIdx].purchase[dataCargo.prop])
+--     -- Give money for player:
+--     print('xPlayer', xPlayer)
+--     -- xPlayer.addMoney(WarehouseSystem.data[storeIdx].purchase[dataCargo.prop])
     
-    -- Update file:
-    WarehouseSystem.data[storeIdx].amount = newStoreAmount
-    TriggerClientEvent('cuoi-trucker:commodity-system:pushCargo', -1, WarehouseSystem.data)
-    SaveResourceFile(GetCurrentResourceName(), "data/warehouse_system.json", json.encode(WarehouseSystem.data), -1)
-end)
+--     -- Update file:
+--     WarehouseSystem.data[storeIdx].amount = newStoreAmount
+--     TriggerClientEvent('cuoi-trucker:commodity-system:pushCargo', -1, WarehouseSystem.data)
+--     SaveResourceFile(GetCurrentResourceName(), "data/warehouse_system.json", json.encode(WarehouseSystem.data), -1)
+-- end)
 
 ----------------------------------
 --- Callbacks:
@@ -198,12 +198,12 @@ end)
 --- Commands:
 ----------------------------------
 if Config.Debug then
-    RegisterCommand("sv_get_cargo", function(source, args)
-        local dataTest = {
-            storeIdx = 1,
-            type = 'store',
-            prop = 'prop_cs_rub_box_02',
-        }
-        TriggerEvent('cuoi-trucker:commodity-system:pushCargo', dataTest)
-    end)
+    -- RegisterCommand("sv_get_cargo", function(source, args)
+    --     local dataTest = {
+    --         storeIdx = 1,
+    --         type = 'store',
+    --         prop = 'prop_cs_rub_box_02',
+    --     }
+    --     TriggerEvent('cuoi-trucker:commodity-system:pushCargo', dataTest)
+    -- end)
 end

@@ -82,6 +82,8 @@ function HUD:FastThick()
         local plyId = GetPlayerServerId(PlayerId())
         local srvLogo = Config.Default.ServerLogo
         while ESX.PlayerLoaded do
+            self.Data.Time = GetClockHours() .. ":" .. GetClockMinutes()
+
             if not Config.Disable.Voice then
                 self.Data.isTalking = NetworkIsPlayerTalking(PlayerId())
             end
@@ -90,6 +92,7 @@ function HUD:FastThick()
                 bool, ammoInClip = GetAmmoInClip(PlayerPedId(), self.Data.Weapon.CurrentWeapon)
                 self.Data.Weapon.CurrentAmmo = ammoInClip
             end
+
 
             local values = {
                 playerId = plyId,
@@ -105,6 +108,7 @@ function HUD:FastThick()
                     maxAmmo = self.Data.Weapon.MaxAmmo or 0,
                 },
                 streetName = self.Data.Location or "Noname street",
+                time = self.Data.Time or "00:00",
                 voice = {
                     mic = self.Data.isTalking or false,
                     radio = self.Data.isTalkingOnRadio,

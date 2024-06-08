@@ -1,7 +1,7 @@
 vehicles = {}
-local holdingCargo = false
-local cargoProp = nil
-local serverData = {}
+cargoProp = nil
+holdingCargo = false
+serverData = {}
 
 ----------------------------------
 --- Functions:
@@ -68,20 +68,28 @@ local function getWareHouseDataByCode(code)
     return nil
 end
 
-local function animCargoTake()
+local function animCargoTake(cargoType)
     local model = Config.CargoProps[1]
     lib.requestModel(model)
 
     local pos = GetEntityCoords(cache.ped)
-    cargoProp = CreateObject(model, pos.x, pos.y, pos.z, true, true, true)
-    AttachEntityToEntity(cargoProp, cache.ped, GetPedBoneIndex(cache.ped, 28422), 0.01, -0.3, 0.1, 6.0, 0.0, 0.0, true, true, false, true, 0, true)
+    local cargoEntity = CreateObject(model, pos.x, pos.y, pos.z, true, true, true)
+    AttachEntityToEntity(cargoEntity, cache.ped, GetPedBoneIndex(cache.ped, 28422), 0.01, -0.3, 0.1, 6.0, 0.0, 0.0, true, true, false, true, 0, true)
     
     lib.requestAnimDict('anim@heists@box_carry@')
     TaskPlayAnim(cache.ped, 'anim@heists@box_carry@', 'idle', 5.0, 5.0, -1, 51, 0, 0, 0, 0)
     SetModelAsNoLongerNeeded(model)
+
+    cargoProp = {
+        entity = cargoEntity,
+        model = model,
+        type = cargoType,
+    }
+
+    print('cargoType', cargoType)
     
     CreateThread(function()
-        while DoesEntityExist(cargoProp) do
+        while cargoProp and DoesEntityExist(cargoProp.entity) do
             if not IsEntityPlayingAnim(cache.ped, 'anim@heists@box_carry@', 'idle', 3) then
                 TaskPlayAnim(cache.ped, 'anim@heists@box_carry@', 'idle', 5.0, 5.0, -1, 51, 0, 0, 0, 0)
             end
@@ -93,14 +101,16 @@ local function animCargoTake()
     holdingCargo = true
 end
 
-local function animCargoPush()
-    if DoesEntityExist(cargoProp) then
+function animCargoPush()
+    local currentCargo = cargoProp
+    if DoesEntityExist(cargoProp.entity) then
         DetachEntity(cache.ped, true, false)
-        DeleteEntity(cargoProp)
+        DeleteEntity(cargoProp.entity)
         cargoProp = nil
         ClearPedTasksImmediately(cache.ped)
     end
     holdingCargo = false
+    return currentCargo
 end
 
 ----------------------------------
@@ -149,13 +159,17 @@ AddEventHandler('cuoi_trucker:client:cargoPush', function()
         return
     end
 
-    animCargoPush()
+    local currentCargo = animCargoPush()
 
     local posProp = Config.CargoSlots[vehicleExist.model][slot]
-    ESX.Game.SpawnLocalObject(Config.CargoProps[1], vector3(posProp.x, posProp.y, posProp.z), function(object)
-        SetEntityAsMissionEntity(object, true, true)
-        AttachEntityToEntity(object, vehicle, 0, posProp.x, posProp.y, posProp.z, 0.0, 0.0, 0.0, false, false, false, false, 2, true)
-        vehicles[plate].cargos[slot] = object
+    ESX.Game.SpawnLocalObject(currentCargo.model, vector3(posProp.x, posProp.y, posProp.z), function(entity)
+        SetEntityAsMissionEntity(entity, true, true)
+        AttachEntityToEntity(entity, vehicle, 0, posProp.x, posProp.y, posProp.z, 0.0, 0.0, 0.0, false, false, false, false, 2, true)
+        vehicles[plate].cargos[slot] = {
+            entity = entity,
+            model = currentCargo.model,
+            type = currentCargo.type,
+        }
     end)
 end)
 
@@ -173,10 +187,11 @@ AddEventHandler('cuoi_trucker:client:cargoPop', function()
         return
     end
 
-    ESX.Game.DeleteObject(vehicles[plate].cargos[slot])
+    local currentCargo = vehicles[plate].cargos[slot]
+    ESX.Game.DeleteObject(vehicles[plate].cargos[slot].entity)
     vehicles[plate].cargos[slot] = nil
 
-    animCargoTake()
+    animCargoTake(currentCargo.type)
 end)
 
 ----------------------------------
@@ -190,7 +205,7 @@ CreateThread(function()
         icon = 'fas fa-box',
         distance = 2,
         offset = vec3(0.5, 0, 0.5),
-        label = 'Chất hàng lên xe',
+        label = 'Chất hàng',
         canInteract = function(entity)
             return checkVehicleCanPushCargo(entity)
         end,
@@ -244,7 +259,7 @@ local function handleListenPress(warehouseType, warehouseCode)
                     else
                         ESX.TriggerServerCallback("cuoi-trucker:warehouse-system:buyCargo", function(bool)
                             if bool then
-                                animCargoTake()
+                                animCargoTake(warehouseType)
                                 return
                             end
                             print('is empty')

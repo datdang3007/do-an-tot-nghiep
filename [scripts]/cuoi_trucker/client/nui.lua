@@ -15,8 +15,8 @@ function defineMessageRentSuccess(data)
         messageSuccess = messageSuccess.. " ~g~" ..data.name
     end
     messageSuccess = messageSuccess.. " ~s~thành công"
-    if data.price then
-        messageSuccess = messageSuccess.. " với giá ~g~$" ..data.price
+    if data.rent then
+        messageSuccess = messageSuccess.. " với giá ~g~$" ..data.rent
     end
     return messageSuccess
 end

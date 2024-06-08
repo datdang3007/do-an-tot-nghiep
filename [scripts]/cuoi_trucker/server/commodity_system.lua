@@ -17,8 +17,8 @@ CommoditySystem.DefaultData = {
             ['prop_box_wood05a']        = 300,
             ['prop_box_wood04a']        = 400,
             ['prop_box_wood08a']        = 500,
-            ['v_ind_cf_boxes']          = 600,
-            ['prop_boxpile_07d']        = 750,
+            -- ['v_ind_cf_boxes']          = 600,
+            -- ['prop_boxpile_07d']        = 750,
         },
     },
     {
@@ -35,8 +35,8 @@ CommoditySystem.DefaultData = {
             ['prop_box_wood05a']        = 300,
             ['prop_box_wood04a']        = 400,
             ['prop_box_wood08a']        = 500,
-            ['v_ind_cf_boxes']          = 600,
-            ['prop_boxpile_07d']        = 750,
+            -- ['v_ind_cf_boxes']          = 600,
+            -- ['prop_boxpile_07d']        = 750,
         },
     },
     {
@@ -53,8 +53,8 @@ CommoditySystem.DefaultData = {
             ['prop_box_wood05a']        = 300,
             ['prop_box_wood04a']        = 400,
             ['prop_box_wood08a']        = 500,
-            ['v_ind_cf_boxes']          = 600,
-            ['prop_boxpile_07d']        = 750,
+            -- ['v_ind_cf_boxes']          = 600,
+            -- ['prop_boxpile_07d']        = 750,
         },
     },
     {
@@ -71,8 +71,8 @@ CommoditySystem.DefaultData = {
             ['prop_box_wood05a']        = 300,
             ['prop_box_wood04a']        = 400,
             ['prop_box_wood08a']        = 500,
-            ['v_ind_cf_boxes']          = 600,
-            ['prop_boxpile_07d']        = 750,
+            -- ['v_ind_cf_boxes']          = 600,
+            -- ['prop_boxpile_07d']        = 750,
         },
     },
     {
@@ -89,8 +89,8 @@ CommoditySystem.DefaultData = {
             ['prop_box_wood05a']        = 300,
             ['prop_box_wood04a']        = 400,
             ['prop_box_wood08a']        = 500,
-            ['v_ind_cf_boxes']          = 600,
-            ['prop_boxpile_07d']        = 750,
+            -- ['v_ind_cf_boxes']          = 600,
+            -- ['prop_boxpile_07d']        = 750,
         },
     },
 
@@ -109,8 +109,8 @@ CommoditySystem.DefaultData = {
             ['prop_box_wood05a']        = 300,
             ['prop_box_wood04a']        = 400,
             ['prop_box_wood08a']        = 500,
-            ['v_ind_cf_boxes']          = 600,
-            ['prop_boxpile_07d']        = 750,
+            -- ['v_ind_cf_boxes']          = 600,
+            -- ['prop_boxpile_07d']        = 750,
         },
     },
     {
@@ -127,8 +127,8 @@ CommoditySystem.DefaultData = {
             ['prop_box_wood05a']        = 300,
             ['prop_box_wood04a']        = 400,
             ['prop_box_wood08a']        = 500,
-            ['v_ind_cf_boxes']          = 600,
-            ['prop_boxpile_07d']        = 750,
+            -- ['v_ind_cf_boxes']          = 600,
+            -- ['prop_boxpile_07d']        = 750,
         },
     },
     {
@@ -145,8 +145,8 @@ CommoditySystem.DefaultData = {
             ['prop_box_wood05a']        = 300,
             ['prop_box_wood04a']        = 400,
             ['prop_box_wood08a']        = 500,
-            ['v_ind_cf_boxes']          = 600,
-            ['prop_boxpile_07d']        = 750,
+            -- ['v_ind_cf_boxes']          = 600,
+            -- ['prop_boxpile_07d']        = 750,
         },
     },
     {
@@ -163,8 +163,8 @@ CommoditySystem.DefaultData = {
             ['prop_box_wood05a']        = 300,
             ['prop_box_wood04a']        = 400,
             ['prop_box_wood08a']        = 500,
-            ['v_ind_cf_boxes']          = 600,
-            ['prop_boxpile_07d']        = 750,
+            -- ['v_ind_cf_boxes']          = 600,
+            -- ['prop_boxpile_07d']        = 750,
         },
     },
 
@@ -183,8 +183,8 @@ CommoditySystem.DefaultData = {
             ['prop_box_wood05a']        = 150,
             ['prop_box_wood04a']        = 200,
             ['prop_box_wood08a']        = 250,
-            ['v_ind_cf_boxes']          = 350,
-            ['prop_boxpile_07d']        = 450,
+            -- ['v_ind_cf_boxes']          = 350,
+            -- ['prop_boxpile_07d']        = 450,
         },
     },
     {
@@ -201,8 +201,8 @@ CommoditySystem.DefaultData = {
             ['prop_box_wood05a']        = 150,
             ['prop_box_wood04a']        = 200,
             ['prop_box_wood08a']        = 250,
-            ['v_ind_cf_boxes']          = 350,
-            ['prop_boxpile_07d']        = 450,
+            -- ['v_ind_cf_boxes']          = 350,
+            -- ['prop_boxpile_07d']        = 450,
         },
     },
 }
@@ -210,6 +210,11 @@ CommoditySystem.DefaultData = {
 ----------------------------------
 --- Functions:
 ----------------------------------
+function CommoditySystem.UpdateFileData()
+    TriggerClientEvent('cuoi_trucker:client:syncCommodityServerData', -1, CommoditySystem.data)
+    SaveResourceFile(GetCurrentResourceName(), "data/commodity_system.json", json.encode(CommoditySystem.data), -1)
+end
+
 function CommoditySystem.GetCurrentData()
 	local currentData = LoadResourceFile(GetCurrentResourceName(), 'data/commodity_system.json')
 	return currentData and json.decode(currentData)
@@ -225,41 +230,37 @@ function CommoditySystem.Init()
     CommoditySystem.action = true
 end
 
+function CommoditySystem.ActionSellCargo(shopCode, maximumCargo)
+    for k, v in pairs(CommoditySystem.data) do
+        if v.code == shopCode then
+            local newAmount = v.amount + 1;
+            if newAmount == maximumCargo then return false end
+            CommoditySystem.data[k].amount = newAmount
+            CommoditySystem.UpdateFileData()
+            return true
+        end
+    end
+    return false
+end
+
 ----------------------------------
 --- Events:
 ----------------------------------
-RegisterServerEvent('cuoi-trucker:commodity-system:pushCargo')
-AddEventHandler('cuoi-trucker:commodity-system:pushCargo', function(dataCargo)
-    local source = source
-    local xPlayer = ESX.GetPlayerFromId(source)
-    if not xPlayer or not dataCargo then end
-
-    -- Define params:
-    local storeIdx = dataCargo.storeIdx
-    local purchaseObj = Config.Purchases[dataCargo.type][dataCargo.prop]
-
-    -- Check same type:
-    if dataCargo.type ~= Config.Shops.List[storeIdx].type then
-        print('not same type')
-        return
+RegisterServerEvent('cuoi-trucker:commodity-system:resetShops')
+AddEventHandler('cuoi-trucker:commodity-system:resetShops', function(dataCargo)
+    local currentData = CommoditySystem.GetCurrentData()
+    if currentData ~= nil then
+        for k,v in pairs(currentData) do
+            local purchaseConfig = Config.Purchases[v.type]
+            for prop, price in pairs(v.purchase) do
+                local minPrice = purchaseConfig[prop].min_price
+                local maxPrice = purchaseConfig[prop].max_price
+                currentData[k].purchase[prop] = math.random(minPrice, maxPrice)
+            end
+        end
+        CommoditySystem.data = currentData
+        CommoditySystem.UpdateFileData()
     end
-
-    -- Check store full:
-    local storeAmount = CommoditySystem.data[storeIdx].amount
-    local newStoreAmount = storeAmount + purchaseObj.amount
-    if newStoreAmount > Config.Shops.List[storeIdx].maximum_product then
-        print('store is full')
-        return
-    end
-
-    -- Give money for player:
-    print('xPlayer', xPlayer)
-    -- xPlayer.addMoney(CommoditySystem.data[storeIdx].purchase[dataCargo.prop])
-    
-    -- Update file:
-    CommoditySystem.data[storeIdx].amount = newStoreAmount
-    TriggerClientEvent('cuoi-trucker:commodity-system:pushCargo', -1, CommoditySystem.data)
-    SaveResourceFile(GetCurrentResourceName(), "data/commodity_system.json", json.encode(CommoditySystem.data), -1)
 end)
 
 ----------------------------------
@@ -267,6 +268,15 @@ end)
 ----------------------------------
 ESX.RegisterServerCallback('cuoi-trucker:commodity-system:getMarkets', function(source, cb)
     cb(CommoditySystem.GetCurrentData())
+end)
+
+ESX.RegisterServerCallback('cuoi-trucker:commodity-system:sellCargo', function(source, cb, shopCode, maximumCargo)
+    local source = source
+    local xPlayer = ESX.GetPlayerFromId(source)
+    if not xPlayer then end
+
+    -- xPlayer.addMoney(CommoditySystem.data[storeIdx].purchase[dataCargo.prop])
+    cb(CommoditySystem.ActionSellCargo(shopCode, maximumCargo))
 end)
 
 ----------------------------------
@@ -291,12 +301,7 @@ end)
 --- Commands:
 ----------------------------------
 if Config.Debug then
-    RegisterCommand("sv_push_cargo", function(source, args)
-        local dataTest = {
-            storeIdx = 1,
-            type = 'store',
-            prop = 'prop_cs_rub_box_02',
-        }
-        TriggerEvent('cuoi-trucker:commodity-system:pushCargo', dataTest)
+    RegisterCommand("trucker_reset_shop", function(source, args)
+        TriggerEvent('cuoi-trucker:commodity-system:resetShops')
     end)
 end

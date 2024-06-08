@@ -1,10 +1,11 @@
 import { Grid, Typography, styled, useTheme } from "@mui/material";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { COLOR_PALLETTE } from "../../../../constants";
+import { COLOR_PALLETTE, ESize, ESizeLabel } from "../../../../constants";
 import { ITruckerMarket, ITruckerMarketItem } from "../../../../interfaces";
 import { fetchNui } from "../../../../utils";
 import { CustomAccordion } from "./CustomAccordion";
 import { DialogDetailPrice } from "./DialogDetailPrice";
+import { randomId } from "@mui/x-data-grid-generator";
 
 const defaultListMarket = [
   {
@@ -119,14 +120,34 @@ const ListMarketStyle = styled(Grid)(({ theme }) => ({
   },
 }));
 
+const convertDetailPrice = (purchase: any) => {
+  const result = Object.entries(purchase).map(([key, price]: any) => {
+    const size = Object.values(ESize).find((size) => size === key) as ESize;
+    return {
+      id: randomId(),
+      size: ESizeLabel[size],
+      price: price.toString(),
+    };
+  });
+
+  return Object.values(ESizeLabel).map((label) => {
+    const item = result.find((item) => item.size === label);
+    return item || { id: randomId(), size: label, price: "0" };
+  });
+};
+
 const handleMarketsResponse = (
   listMarket: ITruckerMarket[],
   marketsResponse: any
 ) => {
   return listMarket.map((item) => {
-    const newList = marketsResponse?.filter(
-      (market: any) => market.type === item.type
-    );
+    const newList = marketsResponse
+      ?.filter((market: any) => market.type === item.type)
+      .map((item: any) => ({
+        ...item,
+        detailPrice: convertDetailPrice(item.purchase),
+      }));
+
     return {
       ...item,
       list: newList,

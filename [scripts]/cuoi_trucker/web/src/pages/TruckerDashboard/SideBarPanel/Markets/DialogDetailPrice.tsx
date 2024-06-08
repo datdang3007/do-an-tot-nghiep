@@ -10,9 +10,10 @@ import {
   useTheme,
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { randomId } from "@mui/x-data-grid-generator";
 import { ButtonCommon } from "../../../../components";
 import { COLOR_PALLETTE } from "../../../../constants";
+import { useCallback } from "react";
+import { fetchNui } from "../../../../utils";
 
 type Props = {
   info: any;
@@ -23,7 +24,7 @@ export const DialogDetailPrice = (props: Props) => {
   const theme = useTheme();
   const { info, onClose } = props;
 
-  const columns: GridColDef<(typeof rows)[number]>[] = [
+  const columns: GridColDef[] = [
     {
       field: "size",
       headerName: "Kích cỡ",
@@ -35,7 +36,6 @@ export const DialogDetailPrice = (props: Props) => {
     {
       field: "price",
       headerName: "Giá thu",
-      type: "number",
       width: 250,
       align: "center",
       sortable: false,
@@ -43,33 +43,9 @@ export const DialogDetailPrice = (props: Props) => {
     },
   ];
 
-  const rows: any[] = [
-    {
-      id: randomId(),
-      size: "Rất nhỏ",
-      price: "100",
-    },
-    {
-      id: randomId(),
-      size: "Nhỏ",
-      price: "200",
-    },
-    {
-      id: randomId(),
-      size: "Vừa",
-      price: "300",
-    },
-    {
-      id: randomId(),
-      size: "Lớn",
-      price: "400",
-    },
-    {
-      id: randomId(),
-      size: "Rất lớn",
-      price: "500",
-    },
-  ];
+  const onClickSetWaypoint = useCallback(() => {
+    fetchNui("setWayPointToMarket", info);
+  }, [info]);
 
   return (
     <Dialog
@@ -118,7 +94,7 @@ export const DialogDetailPrice = (props: Props) => {
 
             <Grid item xs={6}>
               <TypographyStyle fontSize={theme.spacing(13)}>
-                - Tải trọng: {info?.amount}/20
+                - Lượng hàng: {info?.amount}/20
               </TypographyStyle>
             </Grid>
           </Grid>
@@ -133,8 +109,8 @@ export const DialogDetailPrice = (props: Props) => {
             <CustomCard container>
               <TableStyle container>
                 <DataGrid
-                  rows={rows}
                   columns={columns}
+                  rows={info?.detailPrice ?? []}
                   hideFooter
                   disableColumnMenu
                   disableColumnFilter
@@ -169,6 +145,7 @@ export const DialogDetailPrice = (props: Props) => {
               color: "primary",
               variant: "contained",
               startIcon: <Navigation />,
+              onClick: onClickSetWaypoint,
             }}
           />
         </Grid>

@@ -96,7 +96,7 @@ export const CardMarket = (props: Props) => {
 
             <Grid item xs={12}>
               <TypographyStyle fontSize={theme.spacing(13)}>
-                - Tải trọng: {market.amount}
+                - Lượng hàng: {market.amount}
               </TypographyStyle>
             </Grid>
 
