@@ -1,15 +1,23 @@
-import React, {
+import {
+  DirectionsCarRounded,
+  Factory,
+  StoreRounded,
+} from "@mui/icons-material";
+import {
   ReactNode,
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
-import { ETruckerTabId } from "../constants";
+import { EPageCode, ETruckerTabId } from "../constants";
+import { ISideBar } from "../interfaces";
 
 interface TruckerJobContextProps {
   tab: string;
+  listSideBar: ISideBar[];
   handleSetTab: (newTab: ETruckerTabId) => void;
 }
 
@@ -18,7 +26,13 @@ const TruckerJobContext = createContext<TruckerJobContextProps | undefined>(
 );
 
 // Define the provider component
-export const TruckerJobProvider = ({ children }: { children: ReactNode }) => {
+export const TruckerJobProvider = ({
+  pageCode,
+  children,
+}: {
+  pageCode: string;
+  children: ReactNode;
+}) => {
   const [tab, setTab] = useState(ETruckerTabId.Vehicles);
 
   const handleSetTab = useCallback(
@@ -29,12 +43,63 @@ export const TruckerJobProvider = ({ children }: { children: ReactNode }) => {
     [tab]
   );
 
+  const listSideBar = useMemo(() => {
+    if (pageCode === EPageCode.TruckerTablet) {
+      return [
+        {
+          text: "Thị trường",
+          icon: <StoreRounded />,
+          tab: ETruckerTabId.Markets,
+        },
+        {
+          text: "Nhà cung cấp",
+          icon: <Factory />,
+          tab: ETruckerTabId.Suppliers,
+        },
+      ];
+    }
+    return [
+      {
+        text: "Phương tiện",
+        icon: <DirectionsCarRounded />,
+        tab: ETruckerTabId.Vehicles,
+      },
+      {
+        text: "Thị trường",
+        icon: <StoreRounded />,
+        tab: ETruckerTabId.Markets,
+      },
+      {
+        text: "Nhà cung cấp",
+        icon: <Factory />,
+        tab: ETruckerTabId.Suppliers,
+      },
+    ];
+  }, [pageCode]);
+
+  useEffect(() => {
+    switch (pageCode) {
+      case EPageCode.TruckerDashBoard: {
+        setTab(ETruckerTabId.Vehicles);
+        break;
+      }
+      case EPageCode.TruckerTablet: {
+        setTab(ETruckerTabId.Markets);
+        break;
+      }
+      default: {
+        return;
+      }
+    }
+  }, [pageCode]);
+
   const providerProperties = useMemo(
     () => ({
       tab,
+      listSideBar,
       handleSetTab,
     }),
-    [tab, handleSetTab]
+    [tab, listSideBar, handleSetTab]
   );
 
   return (

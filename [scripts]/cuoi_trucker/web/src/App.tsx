@@ -59,7 +59,10 @@ export const App: React.FC = () => {
   const pageContent = useMemo(() => {
     switch (pageCode) {
       case EPageCode.TruckerDashBoard: {
-        return <TDMain />;
+        return <TDMain pageCode={pageCode} />;
+      }
+      case EPageCode.TruckerTablet: {
+        return <TDMain pageCode={pageCode} />;
       }
       default: {
         return <>Không tìm thấy page code !!!</>;

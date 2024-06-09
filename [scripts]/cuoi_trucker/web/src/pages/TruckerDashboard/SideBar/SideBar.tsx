@@ -1,46 +1,23 @@
-import {
-  Factory,
-  StoreRounded,
-  DirectionsCarRounded,
-} from "@mui/icons-material";
 import { Grid, useTheme } from "@mui/material";
-import { ButtonCommon } from "../../../components";
-import { useTruckerJobProvider } from "../../../providers";
-import { ETruckerTabId } from "../../../constants";
 import { useCallback } from "react";
-
-const listButton = [
-  {
-    text: "Phương tiện",
-    icon: <DirectionsCarRounded />,
-    tab: ETruckerTabId.Vehicles,
-  },
-  {
-    text: "Thị trường",
-    icon: <StoreRounded />,
-    tab: ETruckerTabId.Markets,
-  },
-  {
-    text: "Nhà cung cấp",
-    icon: <Factory />,
-    tab: ETruckerTabId.Suppliers,
-  },
-];
+import { ButtonCommon } from "../../../components";
+import { ISideBar } from "../../../interfaces";
+import { useTruckerJobProvider } from "../../../providers";
 
 export const SideBar = () => {
   const theme = useTheme();
-  const { tab, handleSetTab } = useTruckerJobProvider();
+  const { tab, listSideBar, handleSetTab } = useTruckerJobProvider();
 
   const renderButtonsComponent = useCallback(() => {
-    return listButton.map((b) => (
+    return listSideBar.map((item: ISideBar) => (
       <ButtonCommon
-        key={b.tab}
-        text={b.text}
+        key={item.tab}
+        text={item.text}
         buttonProps={{
           fullWidth: true,
-          startIcon: b.icon,
-          onClick: () => handleSetTab(b.tab),
-          variant: tab === b.tab ? "contained" : "outlined",
+          startIcon: item.icon,
+          onClick: () => handleSetTab(item.tab),
+          variant: tab === item.tab ? "contained" : "outlined",
         }}
         textProps={{
           width: "100%",
@@ -48,7 +25,7 @@ export const SideBar = () => {
         }}
       />
     ));
-  }, [tab, handleSetTab]);
+  }, [tab, listSideBar, handleSetTab]);
 
   return (
     <Grid container padding={theme.spacing(16)} rowGap={theme.spacing(8)}>

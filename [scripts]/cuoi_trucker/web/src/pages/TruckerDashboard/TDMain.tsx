@@ -1,12 +1,18 @@
 import { Card, Container, Divider, Grid, styled } from "@mui/material";
-import { SideBar } from "./SideBar";
-import { SideBarPanel } from "./SideBarPanel";
 import { COLOR_PALLETTE } from "../../constants";
 import { TruckerJobProvider } from "../../providers";
+import { SideBar } from "./SideBar";
+import { SideBarPanel } from "./SideBarPanel";
 
-export const TDMain = () => {
+type Props = {
+  pageCode: string;
+};
+
+export const TDMain = (props: Props) => {
+  const { pageCode } = props;
+
   return (
-    <TruckerJobProvider>
+    <TruckerJobProvider pageCode={pageCode}>
       <ContainerStyle maxWidth="lg">
         <CardStyle>
           <Grid container height={1}>
