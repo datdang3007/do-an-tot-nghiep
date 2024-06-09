@@ -155,24 +155,6 @@ AddEventHandler('cuoi_trucker:client:syncWarehouseServerData', function(data)
     serverData.warehouse = data
 end)
 
-RegisterNetEvent('cuoi_trucker:client:spawnVehicle')
-AddEventHandler('cuoi_trucker:client:spawnVehicle', function(model)
-    ESX.Game.SpawnVehicle(model, vector3(Config.VehicleSpawn.x, Config.VehicleSpawn.y, Config.VehicleSpawn.z), Config.VehicleSpawn.w, function(vehicle) 
-		local playerPed = PlayerPedId()
-        local plate = getVehiclePlate(vehicle)
-        DoScreenFadeOut(1000)
-        Wait(1000)
-        TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
-        vehicles[plate] = {
-            entity = vehicle,
-            model = model,
-            cargos = {},
-        }
-        Wait(1000)
-        DoScreenFadeIn(1000)
-    end)
-end)
-
 RegisterNetEvent('cuoi_trucker:client:cargoPush')
 AddEventHandler('cuoi_trucker:client:cargoPush', function()
     local vehicle, distance = ESX.Game.GetClosestVehicle()

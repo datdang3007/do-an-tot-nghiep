@@ -69,7 +69,7 @@ const listTruckerVehicle: ITruckerVehicle[] = [
   },
   {
     model: "hauler2",
-    rent: 1000,
+    rent: 25000,
     price: 1000000,
     image: Hauler2Img,
     name: "Hauler",
@@ -80,7 +80,7 @@ const listTruckerVehicle: ITruckerVehicle[] = [
   },
   {
     model: "phantom3",
-    rent: 1000,
+    rent: 50000,
     price: 1200000,
     image: Phantom3Img,
     name: "Phantom",

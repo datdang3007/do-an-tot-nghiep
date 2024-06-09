@@ -43,9 +43,15 @@ end)
 --- Vehicles Page
 -------------------------------------------
 RegisterNUICallback('rentVehicle', function(data, cb)
-    toggleNui(false, false, nil)
-    ESX.ShowNotification(defineMessageRentSuccess(data), true, false, 3000)
-    TriggerEvent('cuoi_trucker:client:spawnVehicle', data.model)
+    ESX.TriggerServerCallback('cuoi-trucker:server:rentVehicle', function(bool)
+        if bool then
+            toggleNui(false, false, nil)
+            ESX.ShowNotification(defineMessageRentSuccess(data), true, false, 3000)
+            TriggerEvent('cuoi_trucker:client:spawnVehicle', data.model, data.rent)
+        else
+            ESX.ShowNotification('Bạn ~r~không đủ~s~ tiền thuê!', true, false, 3000)
+        end
+    end, data.rent)
     cb({})
 end)
 

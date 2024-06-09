@@ -114,11 +114,19 @@ function WarehouseSystem.Init()
     WarehouseSystem.action = true
 end
 
-function WarehouseSystem.ActionBuyCargo(prop, wareHouseCode, wareHouseType)
+function WarehouseSystem.ActionBuyCargo(xPlayer, prop, wareHouseCode, wareHouseType)
     for k, v in pairs(WarehouseSystem.data) do
         if v.code == wareHouseCode then
+            -- Check amount:
             local newAmount = v[wareHouseType][prop].amount - 1;
             if newAmount == 0 then return false end
+
+            -- Check money:
+            local totalMoney = xPlayer.getMoney()
+            if totalMoney < v[wareHouseType][prop].price then
+                return false
+            end
+            xPlayer.removeMoney(v[wareHouseType][prop].price, 'Trucker buy cargo')
             WarehouseSystem.data[k][wareHouseType][prop].amount = newAmount
             WarehouseSystem.UpdateFileData()
             return true
@@ -127,11 +135,12 @@ function WarehouseSystem.ActionBuyCargo(prop, wareHouseCode, wareHouseType)
     return false
 end
 
-function WarehouseSystem.ActionReturnCargo(prop, wareHouseCode, wareHouseType)
+function WarehouseSystem.ActionReturnCargo(xPlayer, prop, wareHouseCode, wareHouseType)
     for k, v in pairs(WarehouseSystem.data) do
         if v.code == wareHouseCode then
             local newAmount = v[wareHouseType][prop].amount + 1;
             if newAmount == MaximumCargo then return false end
+            xPlayer.addMoney(v[wareHouseType][prop].price, 'Trucker return cargo')
             WarehouseSystem.data[k][wareHouseType][prop].amount = newAmount
             WarehouseSystem.UpdateFileData()
             return true
@@ -169,7 +178,7 @@ ESX.RegisterServerCallback('cuoi-trucker:warehouse-system:buyCargo', function(so
     local xPlayer = ESX.GetPlayerFromId(source)
     if not xPlayer then end
 
-    local isBuyed = WarehouseSystem.ActionBuyCargo(prop, wareHouseCode, wareHouseType)
+    local isBuyed = WarehouseSystem.ActionBuyCargo(xPlayer, prop, wareHouseCode, wareHouseType)
     cb(isBuyed, prop)
 end)
 
@@ -178,7 +187,7 @@ ESX.RegisterServerCallback('cuoi-trucker:warehouse-system:returnCargo', function
     local xPlayer = ESX.GetPlayerFromId(source)
     if not xPlayer then end
 
-    cb(WarehouseSystem.ActionReturnCargo(prop, wareHouseCode, wareHouseType))
+    cb(WarehouseSystem.ActionReturnCargo(xPlayer, prop, wareHouseCode, wareHouseType))
 end)
 
 ----------------------------------

@@ -1,13 +1,13 @@
 Locales ['en'] = {
   -- weed
-  ['weed_pickupprompt'] = 'press [E] to harvest the Cannabis plant.',
+  ['weed_pickupprompt'] = 'Nhấn [E] để thu hoạch cần sa',
   ['weed_quitprocess'] = 'press [E] to stop Process Cannabis.',
   ['weed_inventoryfull'] = 'you do not have any more inventory space for Cannabis.',
-  ['weed_processprompt'] = 'press [E] to start Process Cannabis.',
+  ['weed_processprompt'] = 'Nhấn [E] để chế tác cần sa',
   ['weed_processingstarted'] = 'processing Cannabis into Marijuana...',
   ['weed_processingfull'] = 'processing ~r~canceled due to full inventory!',
   ['weed_processingenough'] = 'you must have 3x Cannabis in order to process.',
-  ['weed_processed'] = 'you\'ve processed 3x Cannabis to 1x Marijuana',
+  ['weed_processed'] = 'Chế tác cần sa thành công!',
   ['weed_processingtoofar'] = 'the processing has been ~r~canceled due to you abandoning the area.',
 
   -- drug dealer

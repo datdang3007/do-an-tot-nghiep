@@ -236,11 +236,12 @@ function CommoditySystem.Init()
     CommoditySystem.action = true
 end
 
-function CommoditySystem.ActionSellCargo(shopCode, maximumCargo)
+function CommoditySystem.ActionSellCargo(xPlayer, prop, shopCode, maximumCargo)
     for k, v in pairs(CommoditySystem.data) do
         if v.code == shopCode then
             local newAmount = v.amount + 1;
             if newAmount == maximumCargo then return false end
+            xPlayer.addMoney(v.purchase[prop], 'Trucker sell cargo')
             CommoditySystem.data[k].amount = newAmount
             CommoditySystem.UpdateFileData()
             return true
@@ -280,13 +281,12 @@ ESX.RegisterServerCallback('cuoi-trucker:commodity-system:getMarkets', function(
     cb(CommoditySystem.GetCurrentData())
 end)
 
-ESX.RegisterServerCallback('cuoi-trucker:commodity-system:sellCargo', function(source, cb, shopCode, maximumCargo)
+ESX.RegisterServerCallback('cuoi-trucker:commodity-system:sellCargo', function(source, cb, prop, shopCode, maximumCargo)
     local source = source
     local xPlayer = ESX.GetPlayerFromId(source)
     if not xPlayer then end
 
-    -- xPlayer.addMoney(CommoditySystem.data[storeIdx].purchase[dataCargo.prop])
-    cb(CommoditySystem.ActionSellCargo(shopCode, maximumCargo))
+    cb(CommoditySystem.ActionSellCargo(xPlayer, prop, shopCode, maximumCargo))
 end)
 
 ----------------------------------

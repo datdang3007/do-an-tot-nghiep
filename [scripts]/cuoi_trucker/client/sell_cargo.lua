@@ -49,7 +49,7 @@ local function handleListenPress(shopCode, maximumCargo)
                                 return
                             end
                             print('is full')
-                        end, shopCode, maximumCargo)
+                        end, cargoProp.model, shopCode, maximumCargo)
                     end
                     ESX.HideUI()
                     return

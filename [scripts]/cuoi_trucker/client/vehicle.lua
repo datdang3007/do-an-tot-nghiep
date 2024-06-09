@@ -1,12 +1,51 @@
 local nearMarker = false
 local listenPress = false
 
+----------------------------------
+--- Functions:
+----------------------------------
+local function defineRefundPrice(vehicle, price)
+    local refundPrice = price * 0.8
+    if IsVehicleDamaged(vehicle) then
+        refundPrice = refundPrice - (price * 0.15)
+    end
+    return math.floor(refundPrice)
+end
+
+----------------------------------
+--- Events:
+----------------------------------
+RegisterNetEvent('cuoi_trucker:client:spawnVehicle')
+AddEventHandler('cuoi_trucker:client:spawnVehicle', function(model, rentPrice)
+    ESX.Game.SpawnVehicle(model, vector3(Config.VehicleSpawn.x, Config.VehicleSpawn.y, Config.VehicleSpawn.z), Config.VehicleSpawn.w, function(vehicle) 
+		local playerPed = PlayerPedId()
+        local plate = getVehiclePlate(vehicle)
+        DoScreenFadeOut(1000)
+        Wait(1000)
+        TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
+        vehicles[plate] = {
+            rentPrice = rentPrice,
+            entity = vehicle,
+            model = model,
+            cargos = {},
+        }
+        Wait(1000)
+        DoScreenFadeIn(1000)
+    end)
+end)
+
+----------------------------------
+--- Threads:
+----------------------------------
 local function handleListenPress(warehouseType, warehouseCode)
     if listenPress then return end
     listenPress = true
     Wait(500)
 
-    ESX.TextUI('Nhấn [E] để trả phương tiện')
+    local plate = getVehiclePlate(GetVehiclePedIsIn(PlayerPedId()))
+    local vehicleInfo = vehicles[plate]
+    local refundPrice = defineRefundPrice(vehicleInfo.entity, vehicleInfo.rentPrice)
+    ESX.TextUI('Nhấn [E] để trả phương tiện (Hoàn trả: $' .. refundPrice .. ')')
     CreateThread(function()
         while listenPress do
             Wait(0)
@@ -17,6 +56,7 @@ local function handleListenPress(warehouseType, warehouseCode)
                 ESX.HideUI()
                 DoScreenFadeOut(1000)
                 Wait(1000)
+                TriggerServerEvent('cuoi-trucker:server:refundVehicle', refundPrice)
                 ESX.Game.DeleteVehicle(vehicles[plate].entity)
                 Wait(1000)
                 DoScreenFadeIn(1000)
