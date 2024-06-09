@@ -1,6 +1,21 @@
 local bool, ammoInClip = false, 0
 local WeaponList = {}
 
+function HUD:GetTime()
+    local hours = GetClockHours()
+    local minutes = GetClockMinutes()
+
+    if hours <= 9 then
+        hours = "0" .. hours
+    end
+
+    if minutes <= 9 then
+        minutes = "0" .. minutes
+    end
+
+    return string.format("%s:%s", hours, minutes)
+end
+
 function HUD:GetJobLabel()
     if not ESX.PlayerData.job then
         return
@@ -82,8 +97,6 @@ function HUD:FastThick()
         local plyId = GetPlayerServerId(PlayerId())
         local srvLogo = Config.Default.ServerLogo
         while ESX.PlayerLoaded do
-            self.Data.Time = GetClockHours() .. ":" .. GetClockMinutes()
-
             if not Config.Disable.Voice then
                 self.Data.isTalking = NetworkIsPlayerTalking(PlayerId())
             end
@@ -108,7 +121,7 @@ function HUD:FastThick()
                     maxAmmo = self.Data.Weapon.MaxAmmo or 0,
                 },
                 streetName = self.Data.Location or "Noname street",
-                time = self.Data.Time or "00:00",
+                time = HUD:GetTime() or "00:00",
                 voice = {
                     mic = self.Data.isTalking or false,
                     radio = self.Data.isTalkingOnRadio,

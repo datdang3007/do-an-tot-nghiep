@@ -68,8 +68,8 @@ local function getWareHouseDataByCode(code)
     return nil
 end
 
-local function animCargoTake(cargoType)
-    local model = Config.CargoProps[1]
+local function animCargoTake(prop, cargoType)
+    local model = prop
     lib.requestModel(model)
 
     local pos = GetEntityCoords(cache.ped)
@@ -86,8 +86,6 @@ local function animCargoTake(cargoType)
         type = cargoType,
     }
 
-    print('cargoType', cargoType)
-    
     CreateThread(function()
         while cargoProp and DoesEntityExist(cargoProp.entity) do
             if not IsEntityPlayingAnim(cache.ped, 'anim@heists@box_carry@', 'idle', 3) then
@@ -111,6 +109,37 @@ function animCargoPush()
     end
     holdingCargo = false
     return currentCargo
+end
+
+local function openMenuCargo(dataWareHouse, warehouseCode, warehouseType)
+    local elements = {}
+
+    for _, cargo in ipairs(Config.CargoProps) do
+        local cargoInfo = dataWareHouse[warehouseType][cargo.prop]
+        local price = cargoInfo.price
+        local amount = cargoInfo.amount
+        table.insert(elements, {
+            label = ('(%s) - %s - <span style="color:green;">%s</span>'):format(amount, cargo.name, '$' ..price),
+            value = cargo.prop
+        })
+    end
+
+    ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'cargo__menu', {
+        title    = "Danh sách hàng hóa",
+        align    = 'bottom-right',
+        elements = elements
+    }, function(data, menu)
+        ESX.TriggerServerCallback("cuoi-trucker:warehouse-system:buyCargo", function(isBuyed, prop)
+            if isBuyed then
+                animCargoTake(prop, warehouseType)
+                return
+            end
+        end, data.current.value, warehouseCode, warehouseType)
+        Wait(300)
+        menu.close()
+    end, function(data, menu)
+        menu.close()
+    end)
 end
 
 ----------------------------------
@@ -191,7 +220,7 @@ AddEventHandler('cuoi_trucker:client:cargoPop', function()
     ESX.Game.DeleteObject(vehicles[plate].cargos[slot].entity)
     vehicles[plate].cargos[slot] = nil
 
-    animCargoTake(currentCargo.type)
+    animCargoTake(currentCargo.model, currentCargo.type)
 end)
 
 ----------------------------------
@@ -242,7 +271,11 @@ local function handleListenPress(warehouseType, warehouseCode)
     local dataWareHouse = getWareHouseDataByCode(warehouseCode)
     if dataWareHouse then
         local actionMessage = cargoProp and 'trả hàng' or 'mua hàng'
-        ESX.TextUI('Nhấn [E] để ' .. actionMessage .. ' ($' .. dataWareHouse[warehouseType][Config.CargoProps[1]].price .. ')')
+        local message = 'Nhấn [E] để ' .. actionMessage
+        if (cargoProp) then
+            message = message .. ' ($' .. dataWareHouse[warehouseType][cargoProp.model].price .. ')'
+        end
+        ESX.TextUI(message)
         CreateThread(function()
             while listenPress do
                 Wait(0)
@@ -255,15 +288,9 @@ local function handleListenPress(warehouseType, warehouseCode)
                                 return
                             end
                             print('is full')
-                        end, warehouseCode, warehouseType)
+                        end, cargoProp.model, warehouseCode, warehouseType)
                     else
-                        ESX.TriggerServerCallback("cuoi-trucker:warehouse-system:buyCargo", function(bool)
-                            if bool then
-                                animCargoTake(warehouseType)
-                                return
-                            end
-                            print('is empty')
-                        end, warehouseCode, warehouseType)
+                        openMenuCargo(dataWareHouse, warehouseCode, warehouseType)
                     end
                     ESX.HideUI()
                     return
@@ -282,20 +309,22 @@ CreateThread(function()
                 local amount = 0
                 local dataWareHouse = getWareHouseDataByCode(Config.WareHouses.Pos[i].ware_house_code)
                 if dataWareHouse then
-                    amount = dataWareHouse[Config.WareHouses.Pos[i].type][Config.CargoProps[1]].amount
+                    for _, cargo in ipairs(Config.CargoProps) do
+                        amount = amount + dataWareHouse[Config.WareHouses.Pos[i].type][cargo.prop].amount
+                    end
                 end
-
+                
                 ESX.Game.Utils.DrawText3D({
                     x = Config.WareHouses.Pos[i].coords.x,
                     y = Config.WareHouses.Pos[i].coords.y,
                     z = Config.WareHouses.Pos[i].coords.z + 1.65,
-                }, 'Còn lại: ' .. (amount == 0 and "~r~" or "~g~") .. amount, 1.2, 6)
+                }, '~y~' .. Config.WareHouses.Pos[i].label, 1.0, 6)
 
                 ESX.Game.Utils.DrawText3D({
                     x = Config.WareHouses.Pos[i].coords.x,
                     y = Config.WareHouses.Pos[i].coords.y,
                     z = Config.WareHouses.Pos[i].coords.z + 1.5,
-                }, Config.WareHouses.Pos[i].label, 1.2, 6)
+                }, 'Còn lại: ' .. (amount == 0 and "~r~" or "~g~") .. amount, 0.85, 6)
                 
                 DrawMarker(1, Config.WareHouses.Pos[i].coords, 0.0, 0.0, 0.0, 0, 0.0, 0.0, Config.WareHouses.Size.x, Config.WareHouses.Size.y, Config.WareHouses.Size.z, Config.WareHouses.Color.r, Config.WareHouses.Color.g, Config.WareHouses.Color.b, 255, false, false, 2, true, false, false, false)
                 sleep = 0
@@ -340,23 +369,23 @@ end)
 --- Commands:
 ----------------------------------
 if Config.Debug then
-    RegisterCommand("trucker_vehicle", function(source, args)
-        TriggerEvent('cuoi_trucker:client:spawnVehicle')
-    end)
+    -- RegisterCommand("trucker_vehicle", function(source, args)
+    --     TriggerEvent('cuoi_trucker:client:spawnVehicle')
+    -- end)
     
-    RegisterCommand("cargo_push", function(source, args)
-        TriggerEvent('cuoi_trucker:client:cargoPush')
-    end)
+    -- RegisterCommand("cargo_push", function(source, args)
+    --     TriggerEvent('cuoi_trucker:client:cargoPush')
+    -- end)
     
-    RegisterCommand("cargo_pop", function(source, args)
-        TriggerEvent('cuoi_trucker:client:cargoPop')
-    end)
+    -- RegisterCommand("cargo_pop", function(source, args)
+    --     TriggerEvent('cuoi_trucker:client:cargoPop')
+    -- end)
 
-    RegisterCommand("take_cargo", function(source, args)
-        animCargoTake()
-    end)
+    -- RegisterCommand("take_cargo", function(source, args)
+    --     animCargoTake()
+    -- end)
 
-    RegisterCommand("push_cargo", function(source, args)
-        animCargoPush()
-    end)
+    -- RegisterCommand("push_cargo", function(source, args)
+    --     animCargoPush()
+    -- end)
 end

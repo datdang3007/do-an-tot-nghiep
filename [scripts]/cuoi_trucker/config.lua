@@ -16,6 +16,13 @@ Config.Blips = {
     Colour = 54,
 }
 
+Config.WareHouseBlips = {
+    Sprite = 557,
+    Display = 4,
+    Scale = 0.65,
+    Colour = 54,
+}
+
 Config.ShopBlips = {
     ['store'] = {
         Sprite = 478,
@@ -66,11 +73,26 @@ Config.ReturnVehicle = {
 --- Cargo Props:
 -------------------------
 Config.CargoProps = {
-    'prop_cs_rub_box_02',
-    'prop_cardbordbox_04a',
-    'prop_box_wood05a',
-    'prop_box_wood04a',
-    'prop_box_wood08a',
+    {
+        name = 'Nhỏ',
+        prop = 'prop_cs_rub_box_02',
+    },
+    {
+        name = 'Rất nhỏ',
+        prop = 'prop_cardbordbox_04a',
+    },
+    {
+        name = 'Vừa',
+        prop = 'prop_box_wood05a',
+    },
+    {
+        name = 'Lớn',
+        prop = 'prop_box_wood04a',
+    },
+    {
+        name = 'Rất lớn',
+        prop = 'prop_box_wood08a',
+    }
     -- 'v_ind_cf_boxes',
     -- 'prop_boxpile_07d'
 }

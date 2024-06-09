@@ -27,6 +27,21 @@ CreateThread(function()
     AddTextComponentSubstringPlayerName(v.name)
     EndTextCommandSetBlipName(shopBlip)
   end
+
+   -- Create WareHouse blips:
+   for k, v in pairs(Config.WareHouses.List) do
+    local shopBlip = AddBlipForCoord(v.pos.x, v.pos.y, v.pos.z)
+    
+    SetBlipSprite(shopBlip, Config.WareHouseBlips.Sprite)
+    SetBlipDisplay(shopBlip, Config.WareHouseBlips.Display)
+    SetBlipScale(shopBlip, Config.WareHouseBlips.Scale)
+    SetBlipColour(shopBlip, Config.WareHouseBlips.Colour)
+    SetBlipAsShortRange(shopBlip, true)
+
+    BeginTextCommandSetBlipName('STRING')
+    AddTextComponentSubstringPlayerName(v.name)
+    EndTextCommandSetBlipName(shopBlip)
+  end
 end)
 
 -- Add box zone to react with laptop:

@@ -72,6 +72,11 @@ CreateThread(function()
                 local content = 'Lượng hàng: ' .. amount .. "/~g~" .. Config.Shops.List[i].maximum_cargo
                 if not isShopOpen then
                     content = "~r~Tạm dừng nhận hàng"
+                    ESX.Game.Utils.DrawText3D({
+                        x = Config.Shops.List[i].pos.x,
+                        y = Config.Shops.List[i].pos.y,
+                        z = Config.Shops.List[i].pos.z + 1.35,
+                    }, '(11h-14h, 22h-2h)', 0.75, 6)
                 end
 
                 ESX.Game.Utils.DrawText3D({

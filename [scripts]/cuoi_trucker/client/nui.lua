@@ -35,7 +35,7 @@ RegisterCommand("trucker_tablet", function()
     local playerPed = PlayerPedId()
     local plate = getVehiclePlate(GetVehiclePedIsIn(playerPed))
     if IsPedInAnyVehicle(playerPed) and vehicles[plate]?.entity then
-        TriggerEvent('cuoi-trucker:nui:toggle', true, 'trucker dashboard', true)
+        TriggerEvent('cuoi-trucker:nui:toggle', true, 'trucker tablet', true)
     end
 end)
 
