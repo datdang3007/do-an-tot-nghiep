@@ -1,6 +1,5 @@
 RegisterNUICallback('selectJob', function(data, cb)
     toggleNui(false, false, nil)
-    print('data.job', data.job)
     TriggerServerEvent('cuoi-ui:menu-job:selectJob', data.job)
     cb({})
 end)

@@ -14,7 +14,10 @@ games {
 
 ui_page 'web/build/index.html'
 
-shared_script "@es_extended/imports.lua"
+shared_scripts {
+  "config.lua",
+  "@es_extended/imports.lua",
+}
 
 client_script "client/**/*"
 server_script "server/**/*"

@@ -209,7 +209,7 @@ if ESX.GetConfig().Multichar then
             if not spawned then
                 SetupCharacter(Character)
             end
-            local label = v.firstname .. " " .. v.lastname
+            local label = v.lastname .. " " .. v.firstname
             if Characters[k].disabled then
                 elements[#elements + 1] = { title = label, icon = "fa-regular fa-user", value = v.id }
             else

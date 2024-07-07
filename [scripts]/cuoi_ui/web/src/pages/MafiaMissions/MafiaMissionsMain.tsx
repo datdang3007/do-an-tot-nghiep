@@ -1,25 +1,64 @@
 import { Container, Grid, Typography, styled } from "@mui/material";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { ButtonCommon, ImageCommon } from "../../components";
 import StoreRobberyImg from "../../assets/store_robbery.jpeg";
 import MoneyLaunderingImg from "../../assets/money_laundering.webp";
-import AssasinImg from "../../assets/assasin_sniper.webp";
+import AssassinImg from "../../assets/assasin_sniper.webp";
 import WeedPlanImg from "../../assets/weed_plan.jpg";
 import WeedManufacturingImg from "../../assets/manufacturing_weed.webp";
 import WeedExpressImg from "../../assets/weed_express.jpg";
 import WeedTruckingImg from "../../assets/weed_trucking.jpeg";
+import RandolHeistImg from "../../assets/randol_heist.jpg";
+import { fetchNui } from "../../utils/fetchNui";
 
 const options = [
-  { name: "Cướp tạp hóa", image: StoreRobberyImg },
-  { name: "Rửa tiền", image: MoneyLaunderingImg },
-  { name: "Ám sát", image: AssasinImg },
-  { name: "Hái cần sa", image: WeedPlanImg },
-  { name: "Chế tác cần sa", image: WeedManufacturingImg },
-  { name: "Giao hàng cấm", image: WeedExpressImg },
-  { name: "Vận chuyển hàng cấm", image: WeedTruckingImg },
+  {
+    name: "Cướp tạp hóa",
+    image: StoreRobberyImg,
+    mission: "store_robbery",
+  },
+  {
+    name: "Rửa tiền",
+    image: MoneyLaunderingImg,
+    mission: "money_laundering",
+  },
+  {
+    name: "Ám sát",
+    image: AssassinImg,
+    mission: "assassin",
+  },
+  {
+    name: "Hái cần sa",
+    image: WeedPlanImg,
+    mission: "weed_plan",
+  },
+  {
+    name: "Chế tác cần sa",
+    image: WeedManufacturingImg,
+    mission: "weed_manufacturing",
+  },
+  {
+    name: "Giao hàng cấm",
+    image: WeedExpressImg,
+    mission: "weed_express",
+  },
+  {
+    name: "Vận chuyển hàng cấm",
+    image: WeedTruckingImg,
+    mission: "weed_trucking",
+  },
+  {
+    name: "Cướp tàu ngầm",
+    image: RandolHeistImg,
+    mission: "randol_heist",
+  },
 ];
 
 export const MafiaMissionsMain = () => {
+  const onSelectMission = useCallback((mission: string) => {
+    fetchNui("selectMission", { mission });
+  }, []);
+
   const optionComponent = useMemo(
     () =>
       options.map((op) => {
@@ -47,7 +86,10 @@ export const MafiaMissionsMain = () => {
                 <ButtonCommon text="Chi tiết" />
                 <ButtonCommon
                   text="Nhận nhiệm vụ"
-                  buttonProps={{ color: "success" }}
+                  buttonProps={{
+                    color: "success",
+                    onClick: () => onSelectMission(op.mission),
+                  }}
                 />
               </Grid>
             </CardStyle>
