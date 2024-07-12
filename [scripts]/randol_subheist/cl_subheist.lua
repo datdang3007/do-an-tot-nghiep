@@ -272,9 +272,13 @@ function exitSubmarine()
 
     local success, position, message
 
-    exports['ps-ui']:Scrambler(function(result)
+    -- exports['ps-ui']:Scrambler(function(result)
+    --     success = result
+    -- end, Config.HackType, Config.HackSeconds, 0)
+
+    exports['maze-minigame']:StartMiniGame(function(result)
         success = result
-    end, Config.HackType, Config.HackSeconds, 0)
+    end, false)
 
     -- Depending on how your minigame gets called above, you'll have to adjust. A different example is bl_ui.
     -- You'd switch the above export to: success = exports.bl_ui:CircleProgress(circles, speed)
@@ -351,4 +355,16 @@ lib.onCache('ped', function(newPed) -- To fix an exploit where if your ped chang
             end
         end
     end
+end)
+
+RegisterCommand('maze_test', function()
+    exports['maze-minigame']:StartMiniGame(function(result)
+        success = result
+    end, false)
+end)
+
+RegisterCommand('maze_test2', function()
+    exports['maze-minigame']:StartMiniGame(function(result)
+        success = result
+    end, true)
 end)

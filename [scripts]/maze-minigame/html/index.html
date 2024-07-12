@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/layout.css" />
+    <link rel="stylesheet" href="./css/modal.css" />
+
+    <!-- Title -->
+    <title>Mini Maze Game</title>
+  </head>
+  <body>
+    <section id="main-minigame">
+      <div id="wrapper" style="margin-left: auto; margin-right: auto">
+        <div id="maze">
+          <!-- Time rel -->
+          <div id="timerel"></div>
+
+          <!-- Maze -->
+          <div id="canvas-container">
+            <!-- <canvas id="canvas" width="523" height="523">
+              This text is displayed if your browser does not support HTML5
+              Canvas.
+            </canvas> -->
+          </div>
+        </div>
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal"></div>
+      </div>
+    </section>
+  </body>
+
+  <!-- Scripts -->
+  <script src="./js/maze_logic.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</html>
